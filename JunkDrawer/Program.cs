@@ -12,6 +12,7 @@ builder.Configuration.AddAzureAppConfiguration(connectionString);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Add React/Vite frontend
 builder.Services.AddSpaStaticFiles(configuration => {
     configuration.RootPath = "clientapp/dist";
 });
@@ -57,6 +58,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+// For React/Vite frontend
 const string spaPath = "/app";
 if (app.Environment.IsDevelopment())
 {
@@ -94,5 +96,6 @@ else
         });
     });
 }
+////
 
 app.Run();
