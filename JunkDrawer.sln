@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactChat", "ReactChat\ReactChat.csproj", "{CF68EBA2-B127-47DE-BA1E-9CF14512F5AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JunkDrawer", "JunkDrawer\JunkDrawer.csproj", "{CF68EBA2-B127-47DE-BA1E-9CF14512F5AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

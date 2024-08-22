@@ -1,9 +1,9 @@
 using System.Diagnostics;
+using JunkDrawer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ReactChat.Models;
 
-namespace ReactChat.Controllers;
+namespace JunkDrawer.Controllers;
 
 [Authorize]
 public class HomeController : Controller

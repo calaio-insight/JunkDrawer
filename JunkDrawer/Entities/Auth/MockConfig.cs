@@ -1,4 +1,4 @@
-﻿namespace ReactChat.Entities.Auth;
+﻿namespace JunkDrawer.Entities.Auth;
 
 public class MockConfig
 {

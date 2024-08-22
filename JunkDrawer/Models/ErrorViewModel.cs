@@ -1,4 +1,4 @@
-namespace ReactChat.Models;
+namespace JunkDrawer.Models;
 
 public class ErrorViewModel
 {

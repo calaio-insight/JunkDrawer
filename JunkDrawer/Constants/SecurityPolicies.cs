@@ -1,4 +1,4 @@
-﻿namespace ReactChat.Constants;
+﻿namespace JunkDrawer.Constants;
 
 public class SecurityPolicies
 {

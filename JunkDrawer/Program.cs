@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.Net.Http.Headers;
 using NEasyAuthMiddleware;
-using ReactChat.Entities.Auth;
+using JunkDrawer.Entities.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
