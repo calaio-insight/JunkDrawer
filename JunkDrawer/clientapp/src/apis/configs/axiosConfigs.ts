@@ -2,5 +2,5 @@
 
 export const api = axios.create({
     withCredentials: true,
-    baseURL: "https://https://localhost:44392/api",
+    baseURL: "https://localhost:44392/api",
 })

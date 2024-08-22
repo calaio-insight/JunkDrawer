@@ -1,16 +1,27 @@
 using System.Text.Json;
+using Azure.Identity;
 using Microsoft.Net.Http.Headers;
 using NEasyAuthMiddleware;
 using JunkDrawer.Entities.Auth;
+using JunkDrawer.Interfaces;
+using JunkDrawer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Load configuration from Azure App Configuration
 var connectionString = builder.Configuration.GetConnectionString("AppConfig");
-builder.Configuration.AddAzureAppConfiguration(connectionString);
+builder.Configuration.AddAzureAppConfiguration(options =>
+{
+    options.Connect(connectionString);
+    options.ConfigureKeyVault(vaultOptions =>
+    {
+        vaultOptions.SetCredential(new DefaultAzureCredential());
+    });
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IGraphApiService, GraphApiService>();
 
 // Add React/Vite frontend
 builder.Services.AddSpaStaticFiles(configuration => {
