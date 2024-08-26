@@ -1,6 +1,8 @@
 ﻿create table home
 (
-    homeId        int identity,
+    homeId        int identity
+        constraint home_pk
+            primary key,
     homePhoto     nvarchar(max),
     address       nvarchar(250),
     city          nvarchar(250),
@@ -11,7 +13,8 @@
     createdBy     nvarchar(max),
     createdDate   datetime2,
     modifiedBy    nvarchar(max),
-    modifiedDate  datetime2
+    modifiedDate  datetime2,
+    notes         nvarchar(max)
 )
 go
 
