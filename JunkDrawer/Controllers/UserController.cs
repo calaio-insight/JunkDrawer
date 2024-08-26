@@ -1,4 +1,4 @@
-﻿using JunkDrawer.Interfaces;
+﻿using JunkDrawer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph.Models;
@@ -19,13 +19,13 @@ public class UserController : Controller
         _graphApiService = graphApiService;
     }
     
-    [HttpGet("GetUserById/{userId}")]
+    [HttpGet("GetUserById/{userId}", Name = "GetUserById")]
     public async Task<User> GetUserById(string userId)
     {
         return await _graphApiService.GetUserById(userId);
     }
 
-    [HttpGet("GetUserIdByEmail/{userEmail}")]
+    [HttpGet("GetUserIdByEmail/{userEmail}", Name = "GetUserIdByEmail")]
     public async Task<string> GetUserIdByEmail(string userEmail)
     {
         return await _graphApiService.GetUserIdByEmail(userEmail);

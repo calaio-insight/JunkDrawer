@@ -1,5 +1,5 @@
 ﻿using Azure.Identity;
-using JunkDrawer.Interfaces;
+using JunkDrawer.Services.Interfaces;
 using Microsoft.Graph;
 using Microsoft.Graph.Models;
 

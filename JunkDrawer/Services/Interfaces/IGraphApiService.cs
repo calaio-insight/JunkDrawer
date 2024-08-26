@@ -1,6 +1,6 @@
 ﻿using Microsoft.Graph.Models;
 
-namespace JunkDrawer.Interfaces;
+namespace JunkDrawer.Services.Interfaces;
 
 public interface IGraphApiService
 {

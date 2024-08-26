@@ -3,8 +3,10 @@ using Azure.Identity;
 using Microsoft.Net.Http.Headers;
 using NEasyAuthMiddleware;
 using JunkDrawer.Entities.Auth;
-using JunkDrawer.Interfaces;
+using JunkDrawer.Repositories;
+using JunkDrawer.Repositories.Interfaces;
 using JunkDrawer.Services;
+using JunkDrawer.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +23,12 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddScoped<IGraphApiService, GraphApiService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
+
+builder.Services.AddScoped<IHomeRepository, HomeRepository>();
+builder.Services.AddScoped<IHomeOwnerRepository, HomeOwnerRepository>();
 
 // Add React/Vite frontend
 builder.Services.AddSpaStaticFiles(configuration => {
