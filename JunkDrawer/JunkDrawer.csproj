@@ -38,4 +38,8 @@
       <PackageReference Include="NEasyAuthMiddleware" Version="3.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories\" />
+    </ItemGroup>
+
 </Project>
