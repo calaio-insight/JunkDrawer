@@ -2,10 +2,11 @@
 (
     homeOwnerId int identity
         primary key,
-    userId      int not null,
-    homeId      int not null
+    userId      nvarchar(250) not null,
+    homeId      int           not null
         constraint homeOwner_home__fk
-            references home
+            references home,
+    displayName nvarchar(max) not null
 )
 go
 
