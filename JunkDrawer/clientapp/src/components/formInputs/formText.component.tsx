@@ -7,6 +7,7 @@ interface IFormTextProps {
     placeholder?: string;    
     isTextArea?: boolean | false;
     rows?: number;
+    isRequired?: boolean;
 }
 export const FormTextComponent = (
     {
@@ -15,15 +16,20 @@ export const FormTextComponent = (
         hasErrors,        
         placeholder,
         isTextArea, 
-        rows
+        rows,
+        isRequired
     }:IFormTextProps
 ) => {
     
     return (
         <>
             <div className={"form-row"}>
-                <label htmlFor={idName}
-                       className={"form-label col-form-label col-form-label-sm col"}>{labelText}</label>
+                <label 
+                    htmlFor={idName}
+                    className={"form-label col-form-label col-form-label-sm col"}>
+                        {labelText}
+                        {isRequired ? <span className={"requiredAsterisk"}> *</span> : ""}
+                </label>
                 <Field 
                     as={isTextArea ? "textarea" : ""}
                     rows={rows}
@@ -31,7 +37,7 @@ export const FormTextComponent = (
                     name={idName}
                     id={idName}
                     placeholder={placeholder}
-                    className={"form-control " + (hasErrors ? "is-invalid" : null)}
+                    className={"form-control " + (hasErrors ? "is-invalid" : "")}
                 />
                 <ErrorMessage name={idName} component="span" className={"error invalid-feedback"}/>
             </div>

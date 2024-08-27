@@ -25,7 +25,7 @@ public class HomeOwnerRepository : IHomeOwnerRepository
         await connection.OpenAsync();
         DynamicParameters parameters = new();
         parameters.Add("@homeId", homeId);
-        var homeOwners = await connection.QueryAsync<HomeOwner>(Procedures.GetHomeOwnersByHomeId, commandType: CommandType.StoredProcedure);
+        var homeOwners = await connection.QueryAsync<HomeOwner>(Procedures.GetHomeOwnersByHomeId, parameters, commandType: CommandType.StoredProcedure);
         return homeOwners.ToList();
     }
     

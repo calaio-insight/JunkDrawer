@@ -1,8 +1,9 @@
 ﻿import {Button, Form, Modal} from "react-bootstrap";
 import {FormTextComponent} from "../formInputs/formText.component.tsx";
-import {Formik} from "formik";
+import {ErrorMessage, Field, Formik} from "formik";
 import * as yup from 'yup';
 import {IHome} from "../../interfaces/home.interface.ts";
+import {MultiSelectComponent} from "../formInputs/multiSelect.component.tsx";
 
 interface IHomeModalProps {
     show: boolean;
@@ -10,6 +11,7 @@ interface IHomeModalProps {
     modalTitle: string;
     handleSubmit: (formValues: any) => void;
     homeData?: IHome;
+    homeOwnerOptions: []
 }
 export const HomeModalComponent = (
 {
@@ -17,8 +19,32 @@ export const HomeModalComponent = (
     handleClose,
     modalTitle,
     handleSubmit,
-    homeData
+    homeData,
+    homeOwnerOptions
 }:IHomeModalProps) => {
+    const languageOptions = [
+        {
+            label: "Chinese",
+            value: "zh-CN"
+        },
+        {
+            label: "English (US)",
+            value: "en-US"
+        },
+        {
+            label: "English (GB)",
+            value: "en-GB"
+        },
+        {
+            label: "French",
+            value: "fr-FR"
+        },
+        {
+            label: "Spanish",
+            value: "es-ES"
+        }
+    ];
+    
     const schema = yup.object().shape({
         homeName: yup.string().required("Home Name is required"),
         homePhoto: yup.string(),
@@ -30,7 +56,7 @@ export const HomeModalComponent = (
         purchaseDate: yup.string(),
         purchasePrice: yup.number(),
         notes: yup.string(),
-        //homeOwners:
+        homeOwners: yup.array().min(1, "Owners must contain at least one user")
     });
     
     const handleFormSubmit = (formValues:any) => {
@@ -44,18 +70,18 @@ export const HomeModalComponent = (
         <Modal show={show} onHide={handleClose} size={"lg"}>
             <Formik 
                 initialValues={{
-                    homeId: homeData?.homeId ?? "",
+                    homeId: homeData?.homeId ?? undefined,
                     homeName: homeData?.homeName ?? "",
-                    homePhoto: "",
-                    address: "",
-                    address2: "",
-                    city: "",
-                    state: "",
-                    zip: "",
-                    purchaseDate: "",
-                    purchasePrice: 0,
-                    notes: "",
-                    //homeOwners: []
+                    homePhoto: homeData?.homePhoto ?? "",
+                    address: homeData?.address ?? "",
+                    address2: homeData?.address2 ?? "",
+                    city: homeData?.city ?? "",
+                    state: homeData?.state ??"",
+                    zip: homeData?.zip ?? "",
+                    purchaseDate: homeData?.purchaseDate ?? undefined,
+                    purchasePrice: homeData?.purchasePrice ?? 0,
+                    notes: homeData?.notes ?? "",
+                    homeOwners: homeData?.homeOwners ?? []
                 }} 
                 validationSchema={schema}
                 onSubmit={(values) => {
@@ -73,12 +99,14 @@ export const HomeModalComponent = (
                                 labelText={"Home Name"}
                                 hasErrors={errors.homeName && touched.homeName}
                                 placeholder={"Enter Home Name"}
+                                isRequired={true}
                             />
                             <FormTextComponent
                                 idName={"address"}
                                 labelText={"Street Address"}
                                 hasErrors={errors.address && touched.address}
                                 placeholder={"Enter Street Address"}
+                                isRequired={true}
                             />
                             <div className={"row"}>
                                 <div className={"col"}>
@@ -95,6 +123,7 @@ export const HomeModalComponent = (
                                         labelText={"City"}
                                         hasErrors={errors.city && touched.city}
                                         placeholder={"Enter City"}
+                                        isRequired={true}
                                     />
                                 </div>
                             </div>
@@ -105,6 +134,7 @@ export const HomeModalComponent = (
                                         labelText={"State"}
                                         hasErrors={errors.state && touched.state}
                                         placeholder={"Enter State"}
+                                        isRequired={true}
                                     />
                                 </div>
                                 <div className={"col"}>
@@ -113,6 +143,7 @@ export const HomeModalComponent = (
                                         labelText={"Zip"}
                                         hasErrors={errors.zip && touched.zip}
                                         placeholder={"Enter Zip"}
+                                        isRequired={true}
                                     />
                                 </div>
                             </div>
@@ -142,6 +173,24 @@ export const HomeModalComponent = (
                                 isTextArea={true}
                                 rows={4}
                             />
+                            <div className={"form-row"} >
+                                <label 
+                                    htmlFor={"homeOwners"}                                       
+                                    className={"form-label col-form-label col-form-label-sm col"}>
+                                        Home Owners
+                                        <span className={"requiredAsterisk"}> *</span>
+                                </label>
+                                <Field
+                                    id={"homeOwners"}
+                                    name={"homeOwners"}
+                                    options={languageOptions}
+                                    component={MultiSelectComponent}
+                                    placeholder={"Select at least 1 home owner..."}
+                                    isMulti={true}
+                                    className={"custom-select " + (errors.homeOwners && touched.homeOwners ? "is-invalid" : "")}
+                                />
+                                <ErrorMessage name={"homeOwners"} component="span" className={"error invalid-feedback"}/>
+                            </div>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleClose}>

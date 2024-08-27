@@ -46,10 +46,14 @@ public class HomeRepository : IHomeRepository
         
         await connection.OpenAsync();
         DynamicParameters parameters = new();
-        parameters.Add("@homeId", home.HomeId);
+        if (home.HomeId != 0)
+        {
+            parameters.Add("@homeId", home.HomeId);
+        }
         parameters.Add("@homeName", home.HomeName);
         parameters.Add("@homePhoto", home.HomePhoto);
         parameters.Add("@address", home.Address);
+        parameters.Add("@address2", home.Address2);
         parameters.Add("@city", home.City);
         parameters.Add("@state", home.State);
         parameters.Add("@zip", home.Zip);

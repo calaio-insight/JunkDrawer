@@ -9,6 +9,7 @@ import {HomeModalComponent} from "../components/homes/homeModal.component.tsx";
 export const Homes = () => {
     const currentUser = useContext(UserContext);
     const [homes, setHomes] = useState<IHome[]>([]);
+    const [homeOwnerOptions, setHomeOwnerOptions] = useState<[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [show, setShow] = useState(false);
 
@@ -21,8 +22,10 @@ export const Homes = () => {
         setIsLoading(true);
         HomeApi.upsertHome(formValues, currentUser!.id).then(() => {
             getHomes().then(() => setIsLoading(false));
-        });
-        
+        }).catch(() => {
+            alert("There was an error saving your changes.");
+            setIsLoading(false);
+        });        
     }
     
     const getHomes = async () =>{
@@ -30,11 +33,14 @@ export const Homes = () => {
             setHomes(homesList);
         }).finally(() => setIsLoading(false));
     }
+    
+    //TODO GET HOMEOWNERSOPTIONS
         
     useEffect(() => {
         if (currentUser){
             setIsLoading(true);
             getHomes().then(() => setIsLoading(false));
+            //TODO CALL GETHOWNEROPTIONS
         }
     }, [currentUser])
     
@@ -59,7 +65,7 @@ export const Homes = () => {
                 : <div>No homes created yet.</div>
             }
 
-            <HomeModalComponent modalTitle={"Create Home"} show={show} handleClose={handleClose} handleSubmit={handleSubmit} />
+            <HomeModalComponent modalTitle={"Create Home"} show={show} handleClose={handleClose} handleSubmit={handleSubmit} homeOwnerOptions={homeOwnerOptions} />
         </>
     )
 }

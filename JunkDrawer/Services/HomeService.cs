@@ -44,12 +44,16 @@ public class HomeService : IHomeService
         var homeId = await _homeRepository.UpsertHome(home, currentUserId);
         
         // Clear and re-insert homeowners list
-        await _homeOwnerRepository.DeleteHomeOwnersByHomeId(home.HomeId);
-        foreach (var owner in home.HomeOwners)
+        if (homeId != null)
         {
-            await _homeOwnerRepository.InsertHomeOwner(owner);
+            await _homeOwnerRepository.DeleteHomeOwnersByHomeId(home.HomeId);
+            foreach (var owner in home.HomeOwners)
+            {
+                owner.HomeId = (int)homeId;
+                await _homeOwnerRepository.InsertHomeOwner(owner);
+            }
         }
-        
+
         return homeId;
     }
 }

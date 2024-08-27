@@ -23,7 +23,7 @@ export const HomeApi = {
 
     upsertHome: async function (home: IHome, currentUserId: string){
         const response = await api.request({
-            url: `${baseUri}/${currentUserId}`,
+            url: `${baseUri}${currentUserId}`,
             method: 'POST',
             data: JSON.stringify(home)
         })
