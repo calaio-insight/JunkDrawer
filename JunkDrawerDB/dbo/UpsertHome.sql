@@ -1,7 +1,9 @@
-﻿create procedure UpsertHome
+﻿CREATE procedure UpsertHome
       @homeId int = null
+    , @homeName nvarchar(250) = null
     , @homePhoto nvarchar(max) = null
     , @address nvarchar(250) = null
+    , @address2 nvarchar(250) = null
     , @city nvarchar(250) = null
     , @state nvarchar(2) = null
     , @zip nvarchar(50) = null
@@ -18,8 +20,10 @@ begin
 
     update dbo.home
     set
-          homePhoto = isnull(@homePhoto, homePhoto)
+          homeName = isnull(@homeName, homeName)
+        , homePhoto = isnull(@homePhoto, homePhoto)
         , address = isnull(@address, address)
+        , address2 = isnull(@address2, address2)
         , city = isnull(@city, city)
         , state = isnull(@state, state)
         , zip = isnull(@zip, zip)
@@ -33,8 +37,8 @@ begin
     where homeId = @homeId
 
     if @@rowcount = 0
-        insert into dbo.home (homePhoto, address, city, state, zip, purchaseDate, purchasePrice, notes, createdBy, createdDate, modifiedBy, modifiedDate)
-        values (@homePhoto, @address, @city, @state, @zip, @purchaseDate, @purchasePrice, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
+        insert into dbo.home (homeName, homePhoto, address, address2, city, state, zip, purchaseDate, purchasePrice, notes, createdBy, createdDate, modifiedBy, modifiedDate)
+        values (@homeName, @homePhoto, @address, @address2, @city, @state, @zip, @purchaseDate, @purchasePrice, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
 
     commit transaction;
 end

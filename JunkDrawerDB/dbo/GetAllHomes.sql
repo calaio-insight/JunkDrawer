@@ -1,9 +1,11 @@
-﻿create procedure GetAllHomes
+﻿CREATE procedure GetAllHomes
 as
 select
        h.homeId
+     , h.homeName
      , h.homePhoto
      , h.address
+     , h.address2
      , h.city
      , h.state
      , h.zip

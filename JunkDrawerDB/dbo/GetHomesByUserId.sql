@@ -1,10 +1,12 @@
-﻿create procedure GetHomesByUserId
+﻿CREATE procedure GetHomesByUserId
     @userId nvarchar(250)
 as
 select
        h.homeId
+     , h.homeName
      , h.homePhoto
      , h.address
+     , h.address2
      , h.city
      , h.state
      , h.zip

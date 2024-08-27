@@ -8,8 +8,10 @@ public class Home
     }
     
     public int HomeId { get; set; }
+    public string HomeName { get; set; }
     public string? HomePhoto { get; set; }
     public string? Address { get; set; }
+    public string? Address2 { get; set; }
     public string? City { get; set; }
     public string? State { get; set; }
     public string? Zip { get; set; }

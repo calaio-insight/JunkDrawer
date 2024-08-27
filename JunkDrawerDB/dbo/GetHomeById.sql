@@ -1,10 +1,12 @@
-﻿create procedure GetHomeById
+﻿CREATE procedure GetHomeById
     @homeId int
 as
 select
        h.homeId
+     , h.homeName
      , h.homePhoto
      , h.address
+     , h.address2
      , h.city
      , h.state
      , h.zip

@@ -14,7 +14,9 @@
     createdDate   datetime2,
     modifiedBy    nvarchar(max),
     modifiedDate  datetime2,
-    notes         nvarchar(max)
+    notes         nvarchar(max),
+    homeName      nvarchar(250) not null,
+    address2      nvarchar(250)
 )
 go
 

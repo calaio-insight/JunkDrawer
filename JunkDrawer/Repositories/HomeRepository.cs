@@ -25,7 +25,7 @@ public class HomeRepository : IHomeRepository
         await connection.OpenAsync();
         DynamicParameters parameters = new();
         parameters.Add("@userId", userId);
-        var homes = await connection.QueryAsync<Home>(Procedures.GetHomesByUserId, commandType: CommandType.StoredProcedure);
+        var homes = await connection.QueryAsync<Home>(Procedures.GetHomesByUserId, parameters, commandType: CommandType.StoredProcedure);
         return homes.ToList();
     }
     
@@ -47,6 +47,7 @@ public class HomeRepository : IHomeRepository
         await connection.OpenAsync();
         DynamicParameters parameters = new();
         parameters.Add("@homeId", home.HomeId);
+        parameters.Add("@homeName", home.HomeName);
         parameters.Add("@homePhoto", home.HomePhoto);
         parameters.Add("@address", home.Address);
         parameters.Add("@city", home.City);
