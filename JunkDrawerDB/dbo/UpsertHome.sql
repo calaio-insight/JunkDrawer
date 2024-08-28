@@ -40,6 +40,8 @@ begin
         insert into dbo.home (homeName, homePhoto, address, address2, city, state, zip, purchaseDate, purchasePrice, notes, createdBy, createdDate, modifiedBy, modifiedDate)
         values (@homeName, @homePhoto, @address, @address2, @city, @state, @zip, @purchaseDate, @purchasePrice, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
 
+    select SCOPE_IDENTITY();
+    
     commit transaction;
 end
 go
