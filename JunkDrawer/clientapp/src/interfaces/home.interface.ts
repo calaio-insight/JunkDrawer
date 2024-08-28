@@ -1,4 +1,4 @@
-﻿import {IHomeOwner} from "./homeOwner.interface.ts";
+﻿import {ITrustedNeighbor} from "./trustedNeighbor.interface.ts";
 
 export interface IHome {
     homeId: number;
@@ -12,5 +12,5 @@ export interface IHome {
     purchaseDate: Date;
     purchasePrice: number;
     notes: string;
-    homeOwners: IHomeOwner[];    
+    trustedNeighbors: ITrustedNeighbor[];    
 }

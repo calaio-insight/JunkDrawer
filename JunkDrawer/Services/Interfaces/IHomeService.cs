@@ -4,7 +4,7 @@ namespace JunkDrawer.Services.Interfaces;
 
 public interface IHomeService
 {
-    Task<List<Home>> GetHomesByUserId(string userId);
+    Task<List<Home>> GetHomesByUserId(int userId);
     Task<Home?> GetHomeById(int id);
-    Task<int?> UpsertHome(Home home, string currentUserId);
+    Task<int?> UpsertHome(Home home, int currentUserId);
 }

@@ -1,5 +1,5 @@
 ﻿CREATE procedure GetHomesByUserId
-    @userId nvarchar(250)
+    @userId int
 as
 select
        h.homeId
@@ -18,7 +18,7 @@ select
      , h.modifiedDate
      , h.notes
 from dbo.home h
-join dbo.homeOwner ho on h.homeId = ho.homeId
-where ho.userId = @userId
+join dbo.trustedNeighbor t on h.homeId = t.homeId
+where t.userId = @userId or h.createdBy = @userId
 go
 

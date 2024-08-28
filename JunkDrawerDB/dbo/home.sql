@@ -10,10 +10,14 @@
     zip           nvarchar(50),
     purchaseDate  datetime2,
     purchasePrice decimal,
-    createdBy     nvarchar(max),
-    createdDate   datetime2,
-    modifiedBy    nvarchar(max),
-    modifiedDate  datetime2,
+    createdBy     int           not null
+        constraint home_user__fk
+            references [user],
+    createdDate   datetime2     not null,
+    modifiedBy    int           not null
+        constraint home_user__fk_2
+            references [user],
+    modifiedDate  datetime2     not null,
     notes         nvarchar(max),
     homeName      nvarchar(250) not null,
     address2      nvarchar(250)

@@ -8,8 +8,7 @@ function App() {
         <>            
             <NavbarComponent />
             <Container className="mt-4">
-                <RouterComponent />
-                
+                <RouterComponent/>  
             </Container>
         </>
     )

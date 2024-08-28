@@ -19,8 +19,8 @@ public class HomeController : Controller
         _homeService = homeService;
     }
     
-    [HttpGet("GetHomesByUserId/{userId}", Name = "GetHomesByUserId")]
-    public async Task<IActionResult> GetHomesByUserId(string userId)
+    [HttpGet("GetHomesByUserId/{userId:int}", Name = "GetHomesByUserId")]
+    public async Task<IActionResult> GetHomesByUserId(int userId)
     {
         try
         {
@@ -49,8 +49,8 @@ public class HomeController : Controller
         }
     }
     
-    [HttpPost("{currentUserId}", Name = "UpsertHome")]
-    public async Task<IActionResult> UpsertHome([FromBody] Home home, string currentUserId)
+    [HttpPost("{currentUserId:int}", Name = "UpsertHome")]
+    public async Task<IActionResult> UpsertHome([FromBody] Home home, int currentUserId)
     {
         try
         {

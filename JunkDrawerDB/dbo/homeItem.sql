@@ -2,7 +2,7 @@
 (
     homeItemId      int identity
         primary key,
-    homeId          int not null
+    homeId          int       not null
         constraint homeItem_home__fk
             references home,
     itemName        nvarchar(250),
@@ -12,10 +12,14 @@
     maintenanceDate datetime2,
     maintenanceCost decimal,
     notes           nvarchar(max),
-    createdBy       nvarchar(max),
-    createdDate     datetime2,
-    modifiedBy      nvarchar(max),
-    modifiedDate    datetime2
+    createdBy       int       not null
+        constraint homeItem_user_userId_fk
+            references [user],
+    createdDate     datetime2 not null,
+    modifiedBy      int       not null
+        constraint homeItem_user__fk
+            references [user],
+    modifiedDate    datetime2 not null
 )
 go
 

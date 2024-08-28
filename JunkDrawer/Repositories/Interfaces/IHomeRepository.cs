@@ -4,7 +4,7 @@ namespace JunkDrawer.Repositories.Interfaces;
 
 public interface IHomeRepository
 {
-    Task<List<Home>> GetHomesByUserId(string userId);
+    Task<List<Home>> GetHomesByUserId(int userId);
     Task<Home?> GetHomeById(int homeId);
-    Task<int?> UpsertHome(Home home, string currentUserId);
+    Task<int?> UpsertHome(Home home, int currentUserId);
 }

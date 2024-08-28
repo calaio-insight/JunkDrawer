@@ -11,7 +11,7 @@ interface IHomeModalProps {
     modalTitle: string;
     handleSubmit: (formValues: any) => void;
     homeData?: IHome;
-    homeOwnerOptions: []
+    trustedNeighborOptions: []
 }
 export const HomeModalComponent = (
 {
@@ -20,7 +20,7 @@ export const HomeModalComponent = (
     modalTitle,
     handleSubmit,
     homeData,
-    homeOwnerOptions
+    trustedNeighborOptions
 }:IHomeModalProps) => {
     const languageOptions = [
         {
@@ -56,7 +56,7 @@ export const HomeModalComponent = (
         purchaseDate: yup.string(),
         purchasePrice: yup.number(),
         notes: yup.string(),
-        homeOwners: yup.array().min(1, "Owners must contain at least one user")
+        trustedNeighbors: yup.array()
     });
     
     const handleFormSubmit = (formValues:any) => {
@@ -81,7 +81,7 @@ export const HomeModalComponent = (
                     purchaseDate: homeData?.purchaseDate ?? undefined,
                     purchasePrice: homeData?.purchasePrice ?? 0,
                     notes: homeData?.notes ?? "",
-                    homeOwners: homeData?.homeOwners ?? []
+                    trustedNeighbors: homeData?.trustedNeighbors ?? []
                 }} 
                 validationSchema={schema}
                 onSubmit={(values) => {
@@ -178,18 +178,17 @@ export const HomeModalComponent = (
                                     htmlFor={"homeOwners"}                                       
                                     className={"form-label col-form-label col-form-label-sm col"}>
                                         Home Owners
-                                        <span className={"requiredAsterisk"}> *</span>
                                 </label>
                                 <Field
-                                    id={"homeOwners"}
-                                    name={"homeOwners"}
+                                    id={"trustedNeighbors"}
+                                    name={"trustedNeighbors"}
                                     options={languageOptions}
                                     component={MultiSelectComponent}
                                     placeholder={"Select at least 1 home owner..."}
                                     isMulti={true}
-                                    className={"custom-select " + (errors.homeOwners && touched.homeOwners ? "is-invalid" : "")}
+                                    className={"custom-select " + (errors.trustedNeighbors && touched.trustedNeighbors ? "is-invalid" : "")}
                                 />
-                                <ErrorMessage name={"homeOwners"} component="span" className={"error invalid-feedback"}/>
+                                <ErrorMessage name={"trustedNeighbors"} component="span" className={"error invalid-feedback"}/>
                             </div>
                         </Modal.Body>
                         <Modal.Footer>

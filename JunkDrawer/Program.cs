@@ -26,9 +26,13 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IGraphApiService, GraphApiService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserTrustedNeighborService, UserTrustedNeighborService>();
 
 builder.Services.AddScoped<IHomeRepository, HomeRepository>();
-builder.Services.AddScoped<IHomeOwnerRepository, HomeOwnerRepository>();
+builder.Services.AddScoped<ITrustedNeighborRepository, TrustedNeighborRepository>();
+builder.Services.AddScoped<IUserTrustedNeighborRepository, UserTrustedNeighborRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Add React/Vite frontend
 builder.Services.AddSpaStaticFiles(configuration => {

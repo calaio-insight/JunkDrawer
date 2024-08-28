@@ -18,7 +18,8 @@ public class HomeRepository : IHomeRepository
         _connString     = config.GetSection("Sql:ConnectionString").Value ?? "";
     }
 
-    public async Task<List<Home>> GetHomesByUserId(string userId)
+    //Gets all homes user has created or is a "trusted neighbor" for
+    public async Task<List<Home>> GetHomesByUserId(int userId)
     {
         await using SqlConnection connection = new (_connString);
         
@@ -40,7 +41,7 @@ public class HomeRepository : IHomeRepository
         return home;
     }
     
-    public async Task<int?> UpsertHome(Home home, string currentUserId)
+    public async Task<int?> UpsertHome(Home home, int currentUserId)
     {
         await using SqlConnection connection = new (_connString);
         

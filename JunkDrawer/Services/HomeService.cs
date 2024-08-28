@@ -8,23 +8,22 @@ public class HomeService : IHomeService
 {
     private readonly ILogger<HomeService> _logger;
     private readonly IHomeRepository _homeRepository;
-    private readonly IHomeOwnerRepository _homeOwnerRepository;
+    private readonly ITrustedNeighborRepository _trustedNeighborRepository;
 
-    public HomeService(ILogger<HomeService> logger, IHomeRepository homeRepository, IHomeOwnerRepository homeOwnerRepository)
+    public HomeService(ILogger<HomeService> logger, IHomeRepository homeRepository, ITrustedNeighborRepository trustedNeighborRepository)
     {
         _logger = logger;
         _homeRepository = homeRepository;
-        _homeOwnerRepository = homeOwnerRepository;
+        _trustedNeighborRepository = trustedNeighborRepository;
     }
 
-    public async Task<List<Home>> GetHomesByUserId(string userId)
+    public async Task<List<Home>> GetHomesByUserId(int userId)
     {
         var homes = await _homeRepository.GetHomesByUserId(userId);
         foreach (var home in homes)
         {
-            home.HomeOwners = await _homeOwnerRepository.GetHomeOwnersByHomeId(home.HomeId);
+            home.TrustedNeighbors = await _trustedNeighborRepository.GetTrustedNeighborsByHomeId(home.HomeId);
         }
-        
         return homes;
     }
 
@@ -33,24 +32,24 @@ public class HomeService : IHomeService
         var home = await _homeRepository.GetHomeById(id);
         if (home != null)
         {
-            home.HomeOwners = await _homeOwnerRepository.GetHomeOwnersByHomeId(home.HomeId);
+            home.TrustedNeighbors = await _trustedNeighborRepository.GetTrustedNeighborsByHomeId(home.HomeId);
         }
         return home;
     }
 
-    public async Task<int?> UpsertHome(Home home, string currentUserId)
+    public async Task<int?> UpsertHome(Home home, int currentUserId)
     {
         // Insert/Update home
         var homeId = await _homeRepository.UpsertHome(home, currentUserId);
         
-        // Clear and re-insert homeowners list
+        // Clear and re-insert trustedNeighbors list
         if (homeId != null)
         {
-            await _homeOwnerRepository.DeleteHomeOwnersByHomeId(home.HomeId);
-            foreach (var owner in home.HomeOwners)
+            await _trustedNeighborRepository.DeleteTrustedNeighborsByHomeId(home.HomeId);
+            foreach (var neighbor in home.TrustedNeighbors)
             {
-                owner.HomeId = (int)homeId;
-                await _homeOwnerRepository.InsertHomeOwner(owner);
+                neighbor.HomeId = (int)homeId;
+                await _trustedNeighborRepository.InsertTrustedNeighbor(neighbor);
             }
         }
 

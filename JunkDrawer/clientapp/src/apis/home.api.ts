@@ -3,7 +3,7 @@ import {IHome} from "../interfaces/home.interface.ts";
 
 const baseUri = "/home/";
 export const HomeApi = {
-    getHomesByUserId: async function (userId: string){
+    getHomesByUserId: async function (userId: number){
         const response = await api.request({
             url: `${baseUri}GetHomesByUserId/${userId}`,
             method: 'GET'
@@ -21,7 +21,7 @@ export const HomeApi = {
         return response.data;
     },
 
-    upsertHome: async function (home: IHome, currentUserId: string){
+    upsertHome: async function (home: IHome, currentUserId: number){
         const response = await api.request({
             url: `${baseUri}${currentUserId}`,
             method: 'POST',

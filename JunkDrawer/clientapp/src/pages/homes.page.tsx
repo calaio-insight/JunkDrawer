@@ -7,9 +7,10 @@ import {Button} from "react-bootstrap";
 import {HomeModalComponent} from "../components/homes/homeModal.component.tsx";
 
 export const Homes = () => {
-    const currentUser = useContext(UserContext);
+    const userContext = useContext(UserContext);
+    const currentUser = userContext?.currentUser;
     const [homes, setHomes] = useState<IHome[]>([]);
-    const [homeOwnerOptions, setHomeOwnerOptions] = useState<[]>([]);
+    const [trustedNeighborOptions, setTrustedNeighborOptions] = useState<[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [show, setShow] = useState(false);
 
@@ -20,7 +21,7 @@ export const Homes = () => {
         debugger;
         setShow(false);
         setIsLoading(true);
-        HomeApi.upsertHome(formValues, currentUser!.id).then(() => {
+        HomeApi.upsertHome(formValues, currentUser!.userId!).then(() => {
             getHomes().then(() => setIsLoading(false));
         }).catch(() => {
             alert("There was an error saving your changes.");
@@ -29,18 +30,18 @@ export const Homes = () => {
     }
     
     const getHomes = async () =>{
-        HomeApi.getHomesByUserId(currentUser!.id).then(homesList => {
+        HomeApi.getHomesByUserId(currentUser!.userId!).then(homesList => {
             setHomes(homesList);
         }).finally(() => setIsLoading(false));
     }
     
-    //TODO GET HOMEOWNERSOPTIONS
+    //TODO GET trustedNeighborsOptions
         
     useEffect(() => {
         if (currentUser){
             setIsLoading(true);
             getHomes().then(() => setIsLoading(false));
-            //TODO CALL GETHOWNEROPTIONS
+            //TODO CALL GETtrustedNeighbors
         }
     }, [currentUser])
     
@@ -51,12 +52,12 @@ export const Homes = () => {
     return (
         <>
             <div className={"row"}>
-                <h4 className={"col"}>My Homes</h4>
+                <h4 className={"col"}>Homes</h4>
                 <Button className="btn btn-primary col-2" onClick={handleShow}>+ Create Home</Button>
             </div>
 
-            { homes.length > 0 
-                ? 
+            {homes.length > 0
+                ?
                 <div>
                     {homes.map((home) => {
                         return <div>{home.homeName}</div>
@@ -65,7 +66,8 @@ export const Homes = () => {
                 : <div>No homes created yet.</div>
             }
 
-            <HomeModalComponent modalTitle={"Create Home"} show={show} handleClose={handleClose} handleSubmit={handleSubmit} homeOwnerOptions={homeOwnerOptions} />
+            <HomeModalComponent modalTitle={"Create Home"} show={show} handleClose={handleClose}
+                                handleSubmit={handleSubmit} trustedNeighborOptions={trustedNeighborOptions}/>
         </>
     )
 }

@@ -1,7 +1,13 @@
-.custom-select.is-invalid {
+.custom-select.is-invalid  {
     border: 1px solid #dc3545;
     border-radius: 5px;
 }
-.requiredAsterisk {
+.requiredAsterisk, .invalid-text {
     color: #dc3545;
+}
+
+.userIcon{
+    height: 1.5rem;
+    border-radius: 1rem;
+    margin-right: .5rem;
 }

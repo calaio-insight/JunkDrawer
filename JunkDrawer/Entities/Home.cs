@@ -4,7 +4,7 @@ public class Home
 {
     public Home()
     {
-        HomeOwners = [];
+        TrustedNeighbors = [];
     }
     
     public int HomeId { get; set; }
@@ -18,9 +18,9 @@ public class Home
     public DateTime? PurchaseDate { get; set; }
     public double? PurchasePrice { get; set; }
     public string? Notes { get; set; }
-    public string? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
     public DateTime? CreatedDate { get; set; }
-    public string? ModifiedBy { get; set; }
+    public int? ModifiedBy { get; set; }
     public DateTime? ModifiedDate { get; set; }
-    public List<HomeOwner> HomeOwners { get; set; }
+    public List<TrustedNeighbor> TrustedNeighbors { get; set; }
 }

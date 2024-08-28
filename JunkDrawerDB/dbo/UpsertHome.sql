@@ -10,9 +10,9 @@
     , @purchaseDate datetime2 = null
     , @purchasePrice decimal = null
     , @notes nvarchar(max) = null
-    , @createdBy nvarchar(max) = null
+    , @createdBy int = null
     , @createdDate datetime2 = null
-    , @modifiedBy nvarchar(max) = null
+    , @modifiedBy int = null
     , @modifiedDate datetime2 = null
 as
 begin

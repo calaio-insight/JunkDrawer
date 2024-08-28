@@ -7,41 +7,40 @@ using Microsoft.Data.SqlClient;
 
 namespace JunkDrawer.Repositories;
 
-public class HomeOwnerRepository : IHomeOwnerRepository
+public class TrustedNeighborRepository : ITrustedNeighborRepository
 {
-    private readonly ILogger<HomeOwnerRepository> _logger;
+    private readonly ILogger<TrustedNeighborRepository> _logger;
     private readonly string _connString;
 
-    public HomeOwnerRepository(IConfiguration config, ILogger<HomeOwnerRepository> logger)
+    public TrustedNeighborRepository(IConfiguration config, ILogger<TrustedNeighborRepository> logger)
     {
         _logger       = logger;
         _connString     = config.GetSection("Sql:ConnectionString").Value ?? "";
     }
    
-    public async Task<List<HomeOwner>> GetHomeOwnersByHomeId(int homeId)
+    public async Task<List<TrustedNeighbor>> GetTrustedNeighborsByHomeId(int homeId)
     {
         await using SqlConnection connection = new (_connString);
         
         await connection.OpenAsync();
         DynamicParameters parameters = new();
         parameters.Add("@homeId", homeId);
-        var homeOwners = await connection.QueryAsync<HomeOwner>(Procedures.GetHomeOwnersByHomeId, parameters, commandType: CommandType.StoredProcedure);
+        var homeOwners = await connection.QueryAsync<TrustedNeighbor>(Procedures.GetTrustedNeighborsByHomeId, parameters, commandType: CommandType.StoredProcedure);
         return homeOwners.ToList();
     }
     
-    public async Task InsertHomeOwner(HomeOwner homeOwner)
+    public async Task InsertTrustedNeighbor(TrustedNeighbor trustedNeighbor)
     {
         await using SqlConnection connection = new (_connString);
         
         await connection.OpenAsync();
         DynamicParameters parameters = new();
-        parameters.Add("@homeId", homeOwner.HomeId);
-        parameters.Add("@userId", homeOwner.UserId);
-        parameters.Add("@displayName", homeOwner.DisplayName);
-        await connection.ExecuteScalarAsync<int>(Procedures.InsertHomeOwner, parameters, commandType: CommandType.StoredProcedure);
+        parameters.Add("@homeId", trustedNeighbor.HomeId);
+        parameters.Add("@userId", trustedNeighbor.UserId);
+        await connection.ExecuteScalarAsync<int>(Procedures.InsertTrustedNeighbor, parameters, commandType: CommandType.StoredProcedure);
     }
     
-    public async Task<bool> DeleteHomeOwnersByHomeId(int homeId)
+    public async Task<bool> DeleteTrustedNeighborsByHomeId(int homeId)
     {
         await using SqlConnection connection = new (_connString);
         
@@ -50,7 +49,7 @@ public class HomeOwnerRepository : IHomeOwnerRepository
         parameters.Add("@homeId", homeId);
         try
         {
-            await connection.ExecuteScalarAsync<int>(Procedures.DeleteHomeOwnersByHomeId, parameters,
+            await connection.ExecuteScalarAsync<int>(Procedures.DeleteTrustedNeighborsByHomeId, parameters,
                 commandType: CommandType.StoredProcedure);
             return true;
         }
