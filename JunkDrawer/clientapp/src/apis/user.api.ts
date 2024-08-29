@@ -1,8 +1,17 @@
 ﻿import {api} from "./configs/axiosConfigs"
-import {IUser} from "../interfaces/user.interface.ts";
 
 const baseUri = "/user/";
 export const UserApi = {
+    authenticate: async function (googleCredential: string){
+        const response = await api.request({
+            url: `${baseUri}authenticate`,
+            method: 'POST',
+            data: googleCredential
+        })
+
+        return response.data;
+    },
+    
     getUserByEmail: async function (userEmail: string){
         const response = await api.request({
             url: `${baseUri}GetUserByEmail?userEmail=${userEmail}`,
@@ -19,15 +28,5 @@ export const UserApi = {
         })
 
         return response.data;
-    },
-
-    createUser: async function (user: IUser){
-        const response = await api.request({
-            url: `${baseUri}`,
-            method: 'POST',
-            data: JSON.stringify(user)
-        })
-
-        return response.data;
-    },    
+    }
 }

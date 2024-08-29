@@ -3,7 +3,8 @@ import {IHome} from "../interfaces/home.interface.ts";
 
 const baseUri = "/home/";
 export const HomeApi = {
-    getHomesByUserId: async function (userId: number){
+        
+    getHomesByUserId: async function (userId: number){   
         const response = await api.request({
             url: `${baseUri}GetHomesByUserId/${userId}`,
             method: 'GET'

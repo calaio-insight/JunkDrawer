@@ -22,6 +22,7 @@ public class HomeController : Controller
     [HttpGet("GetHomesByUserId/{userId:int}", Name = "GetHomesByUserId")]
     public async Task<IActionResult> GetHomesByUserId(int userId)
     {
+        var test = this.User;
         try
         {
             var homes = await _homeService.GetHomesByUserId(userId);

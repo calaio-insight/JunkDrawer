@@ -9,4 +9,6 @@ public class User
     public string DisplayName { get; set; }
     public string PhotoUrl { get; set; }
     public DateTime CreatedDate { get; set; }
+
+    public string? JwtToken { get; set; }
 }

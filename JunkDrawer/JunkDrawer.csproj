@@ -31,13 +31,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Azure.Identity" Version="1.13.0-beta.1" />
       <PackageReference Include="Dapper" Version="2.1.35" />
+      <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
       <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.8" />
       <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="8.0.0-preview.3" />
       <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
-      <PackageReference Include="Microsoft.Graph" Version="5.56.0" />
-      <PackageReference Include="NEasyAuthMiddleware" Version="3.2.0" />
     </ItemGroup>
 
 </Project>

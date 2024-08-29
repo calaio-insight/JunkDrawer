@@ -81,9 +81,11 @@ export const TrustedNeighbors = () => {
         return <SpinnerComponent />
     }
     
+    if (!currentUser) return;
+    
     return (
         <>
-            <div className={"row"}>
+            <div className={"row mb-3"}>
                 <h4 className={"col"}>Trusted Neighbors</h4>
             </div>
 

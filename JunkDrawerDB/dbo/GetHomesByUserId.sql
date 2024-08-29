@@ -18,7 +18,7 @@ select
      , h.modifiedDate
      , h.notes
 from dbo.home h
-join dbo.trustedNeighbor t on h.homeId = t.homeId
+left join dbo.trustedNeighbor t on h.homeId = t.homeId
 where t.userId = @userId or h.createdBy = @userId
 go
 

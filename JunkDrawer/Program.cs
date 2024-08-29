@@ -1,12 +1,12 @@
-using System.Text.Json;
+using System.Text;
 using Azure.Identity;
 using Microsoft.Net.Http.Headers;
-using NEasyAuthMiddleware;
-using JunkDrawer.Entities.Auth;
 using JunkDrawer.Repositories;
 using JunkDrawer.Repositories.Interfaces;
 using JunkDrawer.Services;
 using JunkDrawer.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +22,29 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 });
 
 // Add services to the container.
+var claimKey = builder.Configuration["Jwt:Key"];
+var issuer = builder.Configuration["Jwt:Issuer"];
+if (claimKey == null || issuer == null)
+{
+    throw new Exception("Missing 'Jwt' configuration.");
+}
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = issuer,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(claimKey)),
+        };
+
+    });
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IGraphApiService, GraphApiService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserTrustedNeighborService, UserTrustedNeighborService>();
@@ -38,25 +58,6 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddSpaStaticFiles(configuration => {
     configuration.RootPath = "clientapp/dist";
 });
-
-// Setup Easy Auth
-builder.Services.AddEasyAuth(_ => {  });
-var environment = builder.Configuration["ASPNETCORE_ENVIRONMENT"] ?? "Development";
-if (environment.Equals(Environments.Development))
-{
-    // optionally use mock users from appsettings.development
-    var mockConfig = builder.Configuration.GetSection("Mock").Get<MockConfig>();
-    if (mockConfig is { MockUserEnabled: true })
-    {
-        var tmp = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var path = Path.Combine(tmp, "mockuser.json");
-
-        File.WriteAllText(path, JsonSerializer.Serialize(mockConfig.MockUser));
-
-        builder.Services.UseJsonFileToMockEasyAuth(path);
-    }
-}
-////
 
 var app = builder.Build();
 

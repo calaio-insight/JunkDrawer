@@ -7,18 +7,6 @@ export interface IUser {
     displayName: string;
     photoUrl: string;
     createdDate?: Date;
+    jwtToken?: string;
 }
 
-export interface IGoogleUser {
-    access_token: string;
-}
-
-export interface IGoogleProfile {
-    email: string;
-    family_name: string; //last name
-    given_name: string; //first name
-    id: number; 
-    name: string; //displayName
-    picture: string;
-    verified_email: boolean;
-}

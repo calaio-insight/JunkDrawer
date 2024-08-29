@@ -3,6 +3,7 @@ import viteLogo from '/vite.svg'
 import {useContext} from "react";
 import {UserContext} from "../contexts/user.context.tsx";
 import {Link} from "react-router-dom";
+import {CredentialResponse, GoogleLogin} from "@react-oauth/google";
 
 export const NavbarComponent = () => {
     const userContext = useContext(UserContext);
@@ -39,9 +40,14 @@ export const NavbarComponent = () => {
                                 </div>
                             </>
                             : 
-                                <Nav.Link onClick={userContext?.login} className={"col"}>
-                                    Login with Google
-                                </Nav.Link>
+                            <>
+                                <GoogleLogin 
+                                    onSuccess={(response:CredentialResponse) => {
+                                        console.log(response);
+                                        userContext?.login(response);
+                                    }} 
+                                    onError={() => alert('Login Failed.')} />
+                            </>
                         }
                     </Navbar.Text>
                 </Navbar.Collapse>

@@ -9,7 +9,7 @@ export const RouterComponent = () => {
         <Routes>
             <Route path={'/app/neighbors'} Component={TrustedNeighbors} />    
             <Route path={'/app/homes/:homeId'} element={<HomeComponent />} />
-            <Route path={'/app/homes'} Component={Homes} />
+            <Route path={'/app/homes'} Component={Homes} />            
             <Route path={'/app/*'} element={<div>This is a landing screen</div>} />
         </Routes>
     )
