@@ -15,7 +15,10 @@
     modifiedBy        int                         not null
         constraint trustedNeighbor_user_userId_fk
             references [user],
-    modifiedDate      datetime2 default getdate() not null
+    modifiedDate      datetime2 default getdate() not null,
+    roleId            int                         not null
+        constraint trustedNeighbor_homeRole_homeRoleId_fk
+            references homeRole
 )
 go
 

@@ -3,7 +3,6 @@
 export interface ITrustedNeighbor {
     homeId: number;
     userId: number;
-    role?: IHomeRoleType;
-    
+    roleType?: IHomeRoleType;    
     displayName: string;
 }

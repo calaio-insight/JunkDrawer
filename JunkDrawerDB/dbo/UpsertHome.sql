@@ -34,13 +34,17 @@ begin
         , createdDate = isnull(@createdDate, createdDate)
         , modifiedBy = isnull(@modifiedBy, modifiedBy)
         , modifiedDate = isnull(@modifiedDate, modifiedDate)
-    where homeId = @homeId
+    where homeId = @homeId    
 
     if @@rowcount = 0
-        insert into dbo.home (homeName, homePhoto, address, address2, city, state, zip, purchaseDate, purchasePrice, notes, createdBy, createdDate, modifiedBy, modifiedDate)
-        values (@homeName, @homePhoto, @address, @address2, @city, @state, @zip, @purchaseDate, @purchasePrice, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
+        begin
+            insert into dbo.home (homeName, homePhoto, address, address2, city, state, zip, purchaseDate, purchasePrice, notes, createdBy, createdDate, modifiedBy, modifiedDate)
+            values (@homeName, @homePhoto, @address, @address2, @city, @state, @zip, @purchaseDate, @purchasePrice, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
+            select SCOPE_IDENTITY();
+        end
+    else
+        select @homeId;
 
-    select SCOPE_IDENTITY();
     
     commit transaction;
 end

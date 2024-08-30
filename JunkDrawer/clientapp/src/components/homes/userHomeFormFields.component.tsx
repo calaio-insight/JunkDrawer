@@ -1,22 +1,29 @@
 ﻿import Select from "react-select";
-import {useState} from "react";
-import {Button, FormGroup, Table} from "react-bootstrap";
+import {useEffect, useState} from "react";
+import {Button, FormGroup} from "react-bootstrap";
 import {ITrustedNeighbor} from "../../interfaces/trustedNeighbor.interface.ts";
 import {useHome} from "../../hooks/useHome.hook.ts";
 import {useAuth} from "../../hooks/useAuth.hook.ts";
 import {INeighborOption, IRoleOption} from "../../interfaces/options.interface.ts";
+import {UserHomeDisplay} from "./userHomeDisplay.component.tsx";
 
 
 interface IUserHomeFormFieldsProps {
     homeId: number;
+    setFieldValue: any;
 }
-export const UserHomeFormFields = ({homeId}:IUserHomeFormFieldsProps
+export const UserHomeFormFields = ({homeId, setFieldValue}:IUserHomeFormFieldsProps
 ) => {
     const {currentUser} = useAuth();
     const [selectedNeighbor, setSelectedNeighbor] = useState<INeighborOption|null>(null);
     const [selectedRole, setSelectedRole] = useState<IRoleOption|null>(null);
-    const {neighborOptions, roleOptions, homeTrustedNeighbors, setHomeTrustedNeighbors} = useHome(currentUser?.userId, homeId);
-            
+    const {home, neighborOptions, roleOptions, homeTrustedNeighbors, setHomeTrustedNeighbors} = useHome(currentUser?.userId, homeId);
+           
+    const handleRemoveNeighbor = (neighborUserId: number) => {
+        let neighbors = homeTrustedNeighbors.filter(n => n.userId != neighborUserId);
+        setHomeTrustedNeighbors(neighbors);        
+    }
+    
     const handleAddNeighbor = () => {
         if (selectedNeighbor?.value === null || selectedRole?.value === null) {
             alert("Must select user and role.");
@@ -27,12 +34,23 @@ export const UserHomeFormFields = ({homeId}:IUserHomeFormFieldsProps
             homeId: homeId,
             userId: selectedNeighbor!.value!.userId,
             displayName: selectedNeighbor!.value!.displayName,
-            role: selectedRole!.value,            
-        }
-        console.log("newTrustedNeighbor", newTrustedNeighbor);
-
+            roleType: selectedRole!.value,            
+        }        
+        
         setHomeTrustedNeighbors([...homeTrustedNeighbors, newTrustedNeighbor]);
+        setSelectedNeighbor(null);
+        setSelectedRole(null);
     }
+
+    useEffect(() => {
+        if (home){
+            setHomeTrustedNeighbors(home.trustedNeighbors)
+        }
+    }, [home]);
+    
+    useEffect(() => {
+        setFieldValue("trustedNeighbors", homeTrustedNeighbors);
+    }, [homeTrustedNeighbors])
     
     return (
         <>
@@ -80,27 +98,8 @@ export const UserHomeFormFields = ({homeId}:IUserHomeFormFieldsProps
                     </FormGroup>                    
                 </div>
                 
-                {homeTrustedNeighbors.length > 0 &&
-                    <div className={"row mt-3"}>
-                        <Table striped bordered>
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {homeTrustedNeighbors?.map((neighbor: ITrustedNeighbor) => {
-                                return <tr key={neighbor.userId} id={"user-" + neighbor.userId}>
-                                    <td>{neighbor.displayName}</td>
-                                    <td>{neighbor.role}</td>
-                                    <td>X</td>
-                                </tr>
-                            })}
-                            </tbody>
-                        </Table>
-                    </div>
+                {homeTrustedNeighbors && homeTrustedNeighbors.length > 0 &&
+                    <UserHomeDisplay handleRemoveNeighbor={handleRemoveNeighbor} homeTrustedNeighbors={homeTrustedNeighbors} />
                 }
             </div>
         </>

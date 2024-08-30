@@ -1,5 +1,4 @@
 ﻿import {ITrustedNeighbor} from "./trustedNeighbor.interface";
-import {IHomeRoleType} from "./homeRole.type.ts";
 
 export interface INeighborOption {
     label: string;
@@ -8,5 +7,5 @@ export interface INeighborOption {
 
 export interface IRoleOption {
     label: string;
-    value: IHomeRoleType
+    value: number;
 }

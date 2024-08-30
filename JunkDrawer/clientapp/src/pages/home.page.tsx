@@ -1,26 +1,19 @@
 ﻿import {useParams} from "react-router-dom";
 import {Button, Card} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {IHome} from "../interfaces/home.interface.ts";
 import {HomeApi} from "../apis/home.api.ts";
 import {HomeTabs} from "../components/homes/homeTabs.component.tsx";
 import {HomeBasicTab} from "../components/homes/homeBasicTab.component.tsx";
 import {useAuth} from "../hooks/useAuth.hook.ts";
 import {SpinnerComponent} from "../components/spinner.component.tsx";
+import {useHome} from "../hooks/useHome.hook.ts";
 
 export const Home = () => {
     const {currentUser} = useAuth();
     const {homeId} = useParams();
     const homeIdNum = parseInt(homeId!, 10);
-    const [home, setHome] = useState<IHome>();
-    const [isLoading, setIsLoading] = useState(false);
-
-    const getHome = () =>{        
-        HomeApi.getHomeById(homeIdNum).then(currentHome => {
-            setHome(currentHome);
-            setIsLoading(false);
-        });
-    }
+    const {home, getHome, isLoading, setIsLoading} = useHome(currentUser?.userId, homeIdNum);
 
     const handleSubmit = (formValues: IHome) => {
         setIsLoading(true);

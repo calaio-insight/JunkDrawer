@@ -12,7 +12,7 @@ interface IHomeBasicTabProps {
     handleSubmit: (formValues: IHome) => void;
 }
 export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
-    
+        
     return (
         <>
             <Card.Img variant="top" src={viteLogo} style={{height: "10rem"}} />
@@ -37,7 +37,7 @@ export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
                     console.log(values);
                 }}
             >
-                {({ errors, touched, isValid, dirty, values }) => (
+                {({ errors, touched, isValid, dirty, values, setFieldValue }) => (
                     <Form>
                         <BasicHomeFormFields errors={errors} touched={touched}/>
                         <hr />
@@ -45,6 +45,7 @@ export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
                             ? <>
                                 <UserHomeFormFields
                                     homeId={home.homeId}
+                                    setFieldValue={setFieldValue}
                                 />
                             </>
                             :
