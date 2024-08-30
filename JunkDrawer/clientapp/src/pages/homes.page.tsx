@@ -1,22 +1,16 @@
-﻿import {useContext, useEffect, useState} from "react";
-import {UserContext} from "../contexts/user.context.tsx";
+﻿import {useEffect, useState} from "react";
 import {HomeApi} from "../apis/home.api.ts";
 import {IHome} from "../interfaces/home.interface.ts";
 import {SpinnerComponent} from "../components/spinner.component.tsx";
 import {Button, Card} from "react-bootstrap";
 import {HomeModalComponent} from "../components/homes/homeModal.component.tsx";
-import {UserTrustedNeighborApi} from "../apis/userTrustedNeighbor.api.ts";
-import {IUserTrustedNeighbor} from "../interfaces/userTrustedNeighbor.ts";
-import {HomeTabs} from "../components/homes/homeTabs.component.tsx";
-import { HomeTabContent } from "../components/homes/homeTabContent.component.tsx";
-import {ITrustedNeighbor} from "../interfaces/trustedNeighbor.interface.ts";
+import {useAuth} from "../hooks/useAuth.hook.ts";
+import {Link} from "react-router-dom";
+import viteLogo from "/vite.svg";
 
 export const Homes = () => {
-    const userContext = useContext(UserContext);
-    const currentUser = userContext?.currentUser;
+    const {currentUser} = useAuth();        
     const [homes, setHomes] = useState<IHome[]>([]);
-    const [userTrustedNeighbors, setUserTrustedNeighbors] = useState<IUserTrustedNeighbor[]>([]);
-    const [homeTrustedNeighbors, setHomeTrustedNeighbors] = useState<ITrustedNeighbor[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [show, setShow] = useState(false);
 
@@ -41,17 +35,11 @@ export const Homes = () => {
         });
     }
     
-    const getUserTrustedNeighbors = async () =>{
-        UserTrustedNeighborApi.getUserTrustedNeighborsByUserId(currentUser!.userId!).then(neighbors => {
-            setUserTrustedNeighbors(neighbors);
-        });
-    }
         
     useEffect(() => {
         if (currentUser){
             setIsLoading(true);
             getHomes().then(() => setIsLoading(false));
-            getUserTrustedNeighbors().then(() => setIsLoading(false));
         }
     }, [currentUser])
     
@@ -71,23 +59,23 @@ export const Homes = () => {
             {homes.length > 0
                 ?
                 <div>
-                    <Card>
-                        <Card.Header>
-                            <HomeTabs homes={homes} />
-                        </Card.Header>
-                        <Card.Body>
-                            {homes.map((home) => {
-                                return <HomeTabContent 
-                                    key={home.homeId} 
-                                    home={home} 
-                                    userTrustedNeighbors={userTrustedNeighbors} 
-                                    handleSubmit={handleSubmit}
-                                    homeTrustedNeighbors={homeTrustedNeighbors}
-                                    setHomeTrustedNeighbors={setHomeTrustedNeighbors}
-                                />
-                            })}                            
-                        </Card.Body>
-                    </Card>                    
+                    {homes.map((home) => {
+                        {
+                            return (
+                                <Card key={home.homeId} style={{ width: '18rem' }}>
+                                    <Card.Img variant="top" src={viteLogo} style={{height: "10rem"}} />
+                                    <Card.Body>
+                                        <Card.Title>{home.homeName}</Card.Title>
+                                        <Card.Text>
+                                            Some quick example text to build on the card title and make up the
+                                            bulk of the card's content.
+                                        </Card.Text>                                        
+                                        <Link className={"btn btn-primary"} to={"/app/homes/" + home.homeId} >More Details</Link>
+                                    </Card.Body>
+                                </Card>
+                            )
+                        }
+                    })}                
                 </div>
                 : <div>No homes created yet.</div>
             }

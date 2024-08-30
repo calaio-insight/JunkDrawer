@@ -29,7 +29,7 @@ public class TrustedNeighborRepository : ITrustedNeighborRepository
         return homeOwners.ToList();
     }
     
-    public async Task InsertTrustedNeighbor(TrustedNeighbor trustedNeighbor)
+    public async Task InsertTrustedNeighbor(TrustedNeighbor trustedNeighbor, int currentUserId)
     {
         await using SqlConnection connection = new (_connString);
         
@@ -37,6 +37,8 @@ public class TrustedNeighborRepository : ITrustedNeighborRepository
         DynamicParameters parameters = new();
         parameters.Add("@homeId", trustedNeighbor.HomeId);
         parameters.Add("@userId", trustedNeighbor.UserId);
+        parameters.Add("@roleId", (int)trustedNeighbor.RoleType);
+        parameters.Add("@currentUserId", currentUserId);
         await connection.ExecuteScalarAsync<int>(Procedures.InsertTrustedNeighbor, parameters, commandType: CommandType.StoredProcedure);
     }
     

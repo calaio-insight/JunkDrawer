@@ -1,43 +1,22 @@
-﻿import {IHome} from "../../interfaces/home.interface.ts";
+﻿import {IHome} from "../../interfaces/home.interface";
 import {Alert, Button, Card, Form} from "react-bootstrap";
 import viteLogo from "/vite.svg";
+import {homeSchema} from "../../constants/homeSchema.ts";
 import {BasicHomeFormFields} from "./basicHomeFormFields.component.tsx";
 import {UserHomeFormFields} from "./userHomeFormFields.component.tsx";
 import {Formik} from "formik";
-import {homeSchema} from "../../constants/homeSchema.ts";
-import {useEffect, useState} from "react";
-import {mapOptions} from "../../constants/homeNeighborOptions.ts";
-import {IUserTrustedNeighbor} from "../../interfaces/userTrustedNeighbor.ts";
-import {ITrustedNeighbor} from "../../interfaces/trustedNeighbor.interface.ts";
 
 
-interface IHomeTabContentProps {
+interface IHomeBasicTabProps {
     home: IHome;
-    handleSubmit: (formValues: any) => void;
-    userTrustedNeighbors: IUserTrustedNeighbor[];
-    homeTrustedNeighbors: ITrustedNeighbor[];
-    setHomeTrustedNeighbors: any;
+    handleSubmit: (formValues: IHome) => void;
 }
-export const HomeTabContent = (
-    {
-        home,
-        handleSubmit,
-        userTrustedNeighbors,
-        homeTrustedNeighbors,
-        setHomeTrustedNeighbors
-    }:IHomeTabContentProps) => {
-    const [neighborOptions, setNeighborOptions] = useState<[]>([]);
-
-    useEffect(() => {
-        if (userTrustedNeighbors.length > 0){
-            mapOptions(home.homeId, userTrustedNeighbors, neighborOptions, setNeighborOptions);
-        }
-    }, [userTrustedNeighbors]);
+export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
     
     return (
         <>
             <Card.Img variant="top" src={viteLogo} style={{height: "10rem"}} />
-            <Card.Title>{home.homeName}</Card.Title>            
+            <Card.Title></Card.Title>
             <Formik
                 initialValues={{
                     homeId: home?.homeId ?? undefined,
@@ -64,10 +43,8 @@ export const HomeTabContent = (
                         <hr />
                         {home
                             ? <>
-                                <UserHomeFormFields 
-                                    neighborOptions={neighborOptions}
-                                    homeTrustedNeighbors={homeTrustedNeighbors}
-                                    setHomeTrustedNeighbors={setHomeTrustedNeighbors}
+                                <UserHomeFormFields
+                                    homeId={home.homeId}
                                 />
                             </>
                             :
@@ -90,4 +67,5 @@ export const HomeTabContent = (
             </Formik>
         </>
     )
+    
 }

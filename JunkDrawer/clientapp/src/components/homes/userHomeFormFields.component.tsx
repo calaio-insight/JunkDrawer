@@ -1,37 +1,37 @@
 ﻿import Select from "react-select";
 import {useState} from "react";
-import {NeighborOption} from "../../constants/homeNeighborOptions.ts";
-import {Button, FormGroup} from "react-bootstrap";
+import {Button, FormGroup, Table} from "react-bootstrap";
 import {ITrustedNeighbor} from "../../interfaces/trustedNeighbor.interface.ts";
+import {useHome} from "../../hooks/useHome.hook.ts";
+import {useAuth} from "../../hooks/useAuth.hook.ts";
+import {INeighborOption, IRoleOption} from "../../interfaces/options.interface.ts";
 
-interface Option {
-    label: string;
-    value: number;
-}
+
 interface IUserHomeFormFieldsProps {
-    neighborOptions: NeighborOption[];
-    homeTrustedNeighbors: ITrustedNeighbor[];
-    setHomeTrustedNeighbors: any;
+    homeId: number;
 }
-export const UserHomeFormFields = (
-    {
-        neighborOptions,
-        homeTrustedNeighbors,
-        setHomeTrustedNeighbors
-    }:IUserHomeFormFieldsProps
+export const UserHomeFormFields = ({homeId}:IUserHomeFormFieldsProps
 ) => {
-    const [selectedNeighbor, setSelectedNeighbor] = useState<NeighborOption|null>(null);
-    const [selectedRole, setSelectedRole] = useState<Option|null>(null);
-    
-    const testRoleOptions:Option[] = [
-        {label:"User Role", value:1},
-        {label:"Admin Role", value:2},
-    ]
-    
-    //GET user roles
-    
+    const {currentUser} = useAuth();
+    const [selectedNeighbor, setSelectedNeighbor] = useState<INeighborOption|null>(null);
+    const [selectedRole, setSelectedRole] = useState<IRoleOption|null>(null);
+    const {neighborOptions, roleOptions, homeTrustedNeighbors, setHomeTrustedNeighbors} = useHome(currentUser?.userId, homeId);
+            
     const handleAddNeighbor = () => {
-        //grab selectedNeighbor (has homeid/userid/name) and selectedRole
+        if (selectedNeighbor?.value === null || selectedRole?.value === null) {
+            alert("Must select user and role.");
+            return;
+        }
+        
+        const newTrustedNeighbor:ITrustedNeighbor = {
+            homeId: homeId,
+            userId: selectedNeighbor!.value!.userId,
+            displayName: selectedNeighbor!.value!.displayName,
+            role: selectedRole!.value,            
+        }
+        console.log("newTrustedNeighbor", newTrustedNeighbor);
+
+        setHomeTrustedNeighbors([...homeTrustedNeighbors, newTrustedNeighbor]);
     }
     
     return (
@@ -63,22 +63,45 @@ export const UserHomeFormFields = (
                         <Select
                             name={"selectedRole"}
                             value={selectedRole}
-                            options={testRoleOptions}
+                            options={roleOptions}
                             onChange={setSelectedRole}
                         />
                     </FormGroup>
 
                     <FormGroup className={"col-2 mt-auto"}>
-                        <Button variant={"success"}>+ Add</Button>
-                    </FormGroup>
-
-                    {homeTrustedNeighbors.map((neighbor: ITrustedNeighbor) => {
-                        return <>
-                            <span>{neighbor.displayName} ~ {neighbor.role}</span>
-                        </>
-                    })}
-
+                        <Button 
+                            variant={"success"} 
+                            onClick={handleAddNeighbor}
+                            disabled={!selectedRole || !selectedNeighbor}
+                            className={!selectedRole || !selectedNeighbor ? "disabled-btn" : ""}
+                        >
+                            + Add
+                        </Button>
+                    </FormGroup>                    
                 </div>
+                
+                {homeTrustedNeighbors.length > 0 &&
+                    <div className={"row mt-3"}>
+                        <Table striped bordered>
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {homeTrustedNeighbors?.map((neighbor: ITrustedNeighbor) => {
+                                return <tr key={neighbor.userId} id={"user-" + neighbor.userId}>
+                                    <td>{neighbor.displayName}</td>
+                                    <td>{neighbor.role}</td>
+                                    <td>X</td>
+                                </tr>
+                            })}
+                            </tbody>
+                        </Table>
+                    </div>
+                }
             </div>
         </>
     )

@@ -49,7 +49,7 @@ public class HomeService : IHomeService
             foreach (var neighbor in home.TrustedNeighbors)
             {
                 neighbor.HomeId = (int)homeId;
-                await _trustedNeighborRepository.InsertTrustedNeighbor(neighbor);
+                await _trustedNeighborRepository.InsertTrustedNeighbor(neighbor, currentUserId);
             }
         }
 

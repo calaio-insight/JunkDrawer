@@ -19,6 +19,5 @@ public static class Procedures
     public const string InsertUserTrustedNeighbor = "[dbo].[InsertUserTrustedNeighbor]";
     public const string DeleteUserTrustedNeighbor = "[dbo].[DeleteUserTrustedNeighbor]";
     
-    public const string GetAllHomeRoles = "[dbo].[GetAllHomeRoles]";
     public const string GetHomePermissionsByRoleId = "[dbo].[GetHomePermissionsByRoleId]";
 }

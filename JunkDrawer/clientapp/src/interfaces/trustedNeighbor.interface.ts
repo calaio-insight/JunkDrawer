@@ -1,8 +1,9 @@
-﻿
+﻿import {IHomeRoleType} from "./homeRole.type.ts";
+
 export interface ITrustedNeighbor {
     homeId: number;
     userId: number;
-    role?: string;
+    role?: IHomeRoleType;
     
     displayName: string;
 }
