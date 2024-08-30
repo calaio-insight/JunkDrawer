@@ -10,16 +10,16 @@
     zip           nvarchar(50),
     purchaseDate  datetime2,
     purchasePrice decimal,
-    createdBy     int           not null
+    createdBy     int                         not null
         constraint home_user__fk
             references [user],
-    createdDate   datetime2     not null,
-    modifiedBy    int           not null
+    createdDate   datetime2 default getdate() not null,
+    modifiedBy    int                         not null
         constraint home_user__fk_2
             references [user],
-    modifiedDate  datetime2     not null,
+    modifiedDate  datetime2 default getdate() not null,
     notes         nvarchar(max),
-    homeName      nvarchar(250) not null,
+    homeName      nvarchar(250)               not null,
     address2      nvarchar(250)
 )
 go
