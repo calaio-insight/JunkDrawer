@@ -3,14 +3,16 @@
 interface IBasicHomeFormFieldsProps {
     errors: any;
     touched: any;
+    isBasicDisabled?: boolean;
 }
 export const BasicHomeFormFields = (
     {
         errors,
-        touched
+        touched,
+        isBasicDisabled
     }:IBasicHomeFormFieldsProps
 ) => {
-    
+        
     return (
         <>
             <FormTextComponent
@@ -19,6 +21,7 @@ export const BasicHomeFormFields = (
                 hasErrors={errors.homeName && touched.homeName}
                 placeholder={"Enter Home Name"}
                 isRequired={true}
+                isDisabled={isBasicDisabled}
             />
             <FormTextComponent
                 idName={"address"}
@@ -26,6 +29,7 @@ export const BasicHomeFormFields = (
                 hasErrors={errors.address && touched.address}
                 placeholder={"Enter Street Address"}
                 isRequired={true}
+                isDisabled={isBasicDisabled}
             />
             <div className={"row"}>
                 <div className={"col"}>
@@ -34,6 +38,7 @@ export const BasicHomeFormFields = (
                         labelText={"Street Address 2"}
                         hasErrors={errors.address2 && touched.address2}
                         placeholder={"Enter Street Address 2"}
+                        isDisabled={isBasicDisabled}
                     />
                 </div>
                 <div className={"col"}>
@@ -43,6 +48,7 @@ export const BasicHomeFormFields = (
                         hasErrors={errors.city && touched.city}
                         placeholder={"Enter City"}
                         isRequired={true}
+                        isDisabled={isBasicDisabled}
                     />
                 </div>
             </div>
@@ -54,6 +60,7 @@ export const BasicHomeFormFields = (
                         hasErrors={errors.state && touched.state}
                         placeholder={"Enter State"}
                         isRequired={true}
+                        isDisabled={isBasicDisabled}
                     />
                 </div>
                 <div className={"col"}>
@@ -63,6 +70,7 @@ export const BasicHomeFormFields = (
                         hasErrors={errors.zip && touched.zip}
                         placeholder={"Enter Zip"}
                         isRequired={true}
+                        isDisabled={isBasicDisabled}
                     />
                 </div>
             </div>
@@ -73,6 +81,7 @@ export const BasicHomeFormFields = (
                         labelText={"Purchase Date"}
                         hasErrors={errors.purchaseDate && touched.purchaseDate}
                         placeholder={"Enter Purchase Date"}
+                        isDisabled={isBasicDisabled}
                     />
                 </div>
                 <div className={"col"}>
@@ -81,6 +90,7 @@ export const BasicHomeFormFields = (
                         labelText={"Purchase Price"}
                         hasErrors={errors.purchasePrice && touched.purchasePrice}
                         placeholder={"Enter Purchase Price"}
+                        isDisabled={isBasicDisabled}
                     />
                 </div>
             </div>
@@ -91,6 +101,7 @@ export const BasicHomeFormFields = (
                 placeholder={"Enter Notes"}
                 isTextArea={true}
                 rows={4}
+                isDisabled={isBasicDisabled}
             />
         </>
     )

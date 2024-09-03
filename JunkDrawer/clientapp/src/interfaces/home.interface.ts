@@ -1,4 +1,6 @@
 ﻿import {ITrustedNeighbor} from "./trustedNeighbor.interface.ts";
+import {IHomeRoleType} from "./homeRole.type.ts";
+import {IHomePermissionType} from "./homePermission.type.ts";
 
 export interface IHome {
     homeId: number;
@@ -13,4 +15,6 @@ export interface IHome {
     purchasePrice: number;
     notes: string;
     trustedNeighbors: ITrustedNeighbor[];    
+    role?: IHomeRoleType;
+    permissions?: IHomePermissionType[];
 }

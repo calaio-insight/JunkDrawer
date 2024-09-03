@@ -13,9 +13,9 @@ export const HomeApi = {
         return response.data;
     },
 
-    getHomeById: async function (homeId: number){
+    getHomeById: async function (homeId: number, currentUserId: number){
         const response = await api.request({
-            url: `${baseUri}GetHomeById/${homeId}`,
+            url: `${baseUri}GetHomeById/${homeId}/${currentUserId}`,
             method: 'GET'
         })
 

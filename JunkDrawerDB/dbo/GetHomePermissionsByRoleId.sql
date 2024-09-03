@@ -2,9 +2,7 @@
     @homeRoleId int
 as
 select
-       h.homeRolePermissionId
-     , h.homeRoleId
-     , h.homePermissionId
+       h.homePermissionId
      , hp.homePermissionName
 from dbo.homeRolePermission h
 join dbo.homePermission hp on hp.homePermissionId = h.homePermissionId

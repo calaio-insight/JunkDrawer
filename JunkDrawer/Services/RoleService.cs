@@ -1,4 +1,4 @@
-﻿using JunkDrawer.Entities;
+﻿using JunkDrawer.Enums;
 using JunkDrawer.Repositories.Interfaces;
 using JunkDrawer.Services.Interfaces;
 
@@ -15,9 +15,9 @@ public class RoleService : IRoleService
         _roleRepository = roleRepository;
     }
     
-    public async Task<List<HomeRolePermission>> GetHomePermissionsByRoleId(int homeRoleId)
+    public async Task<List<HomePermissionType>> GetHomePermissionsByRoleId(HomeRoleType homeRole)
     {
-        var homeRolePermissions = await _roleRepository.GetHomePermissionsByRoleId(homeRoleId);
+        var homeRolePermissions = await _roleRepository.GetHomePermissionsByRoleId(homeRole);
         return homeRolePermissions;
     }
 }

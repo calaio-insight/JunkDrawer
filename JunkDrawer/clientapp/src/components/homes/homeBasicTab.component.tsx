@@ -5,6 +5,7 @@ import {homeSchema} from "../../constants/homeSchema.ts";
 import {BasicHomeFormFields} from "./basicHomeFormFields.component.tsx";
 import {UserHomeFormFields} from "./userHomeFormFields.component.tsx";
 import {Formik} from "formik";
+import {usePermissionsHook} from "../../hooks/usePermissions.hook.ts";
 
 
 interface IHomeBasicTabProps {
@@ -12,6 +13,8 @@ interface IHomeBasicTabProps {
     handleSubmit: (formValues: IHome) => void;
 }
 export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
+    const {isOwner, canViewBasic, canEditBasic, canViewAccess, canEditAccess} = usePermissionsHook(home);
+    const isBasicDisabled = !isOwner && !canEditBasic;    
         
     return (
         <>
@@ -39,14 +42,18 @@ export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
             >
                 {({ errors, touched, isValid, dirty, values, setFieldValue }) => (
                     <Form>
-                        <BasicHomeFormFields errors={errors} touched={touched}/>
+                        {(isOwner || canViewBasic || canEditBasic) &&
+                            <BasicHomeFormFields errors={errors} touched={touched} isBasicDisabled={isBasicDisabled}/>
+                        }                        
                         <hr />
                         {home
                             ? <>
-                                <UserHomeFormFields
-                                    homeId={home.homeId}
-                                    setFieldValue={setFieldValue}
-                                />
+                                {(isOwner || canViewAccess || canEditAccess) &&
+                                    <UserHomeFormFields
+                                        homeId={home.homeId}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                }
                             </>
                             :
                             <Alert variant={"info"}>
@@ -54,15 +61,17 @@ export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
                             </Alert>
                         }
 
-                        <Button
-                            variant="primary"
-                            type={"button"}
-                            onClick={() => handleSubmit(values)}
-                            disabled={!(dirty && isValid)}
-                            className={!(dirty && isValid) ? "disabled-btn" : ""}
-                        >
-                            Save Changes
-                        </Button>
+                        {(isOwner || canEditBasic || canEditAccess) &&
+                            <Button
+                                variant="primary"
+                                type={"button"}
+                                onClick={() => handleSubmit(values)}
+                                disabled={!(dirty && isValid)}
+                                className={!(dirty && isValid) ? "disabled-btn" : ""}
+                            >
+                                Save Changes
+                            </Button>
+                        }
                     </Form>
                 )}
             </Formik>

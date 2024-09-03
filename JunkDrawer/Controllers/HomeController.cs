@@ -35,12 +35,12 @@ public class HomeController : Controller
         }
     }
     
-    [HttpGet("GetHomeById/{homeId:int}", Name = "GetHomeById")]
-    public async Task<IActionResult> GetHomeById(int homeId)
+    [HttpGet("GetHomeById/{homeId:int}/{currentUserId:int}", Name = "GetHomeById")]
+    public async Task<IActionResult> GetHomeById(int homeId, int currentUserId)
     {
         try
         {
-            var home = await _homeService.GetHomeById(homeId);
+            var home = await _homeService.GetHomeById(homeId, currentUserId);
             return Ok(home);
         }
         catch (Exception ex)

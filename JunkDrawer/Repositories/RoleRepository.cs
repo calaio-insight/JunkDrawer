@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using JunkDrawer.Constants;
-using JunkDrawer.Entities;
+using JunkDrawer.Enums;
 using JunkDrawer.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 
@@ -18,14 +18,14 @@ public class RoleRepository : IRoleRepository
         _connString     = config.GetSection("Sql:ConnectionString").Value ?? "";
     }
     
-    public async Task<List<HomeRolePermission>> GetHomePermissionsByRoleId(int homeRoleId)
+    public async Task<List<HomePermissionType>> GetHomePermissionsByRoleId(HomeRoleType homeRole)
     {
         await using SqlConnection connection = new (_connString);
         
         await connection.OpenAsync();
         DynamicParameters parameters = new();
-        parameters.Add("@homeRoleId", homeRoleId);
-        var homeRolePermissions = await connection.QueryAsync<HomeRolePermission>(Procedures.GetHomePermissionsByRoleId, parameters, commandType: CommandType.StoredProcedure);
+        parameters.Add("@homeRoleId", homeRole);
+        var homeRolePermissions = await connection.QueryAsync<HomePermissionType>(Procedures.GetHomePermissionsByRoleId, parameters, commandType: CommandType.StoredProcedure);
         return homeRolePermissions.ToList();
     }
 }

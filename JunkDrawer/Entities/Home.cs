@@ -1,4 +1,6 @@
-﻿namespace JunkDrawer.Entities;
+﻿using JunkDrawer.Enums;
+
+namespace JunkDrawer.Entities;
 
 public class Home
 {
@@ -23,4 +25,8 @@ public class Home
     public int? ModifiedBy { get; set; }
     public DateTime? ModifiedDate { get; set; }
     public List<TrustedNeighbor> TrustedNeighbors { get; set; }
+    
+    //View prop
+    public HomeRoleType Role { get; set; }
+    public List<HomePermissionType> Permissions { get; set; }
 }

@@ -1,8 +1,8 @@
-﻿using JunkDrawer.Entities;
+﻿using JunkDrawer.Enums;
 
 namespace JunkDrawer.Repositories.Interfaces;
 
 public interface IRoleRepository
 {
-    Task<List<HomeRolePermission>> GetHomePermissionsByRoleId(int homeRoleId);
+    Task<List<HomePermissionType>> GetHomePermissionsByRoleId(HomeRoleType homeRole);
 }

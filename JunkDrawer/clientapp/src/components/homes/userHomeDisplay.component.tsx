@@ -8,9 +8,9 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 interface IUserHomeDisplayProps {
     homeTrustedNeighbors: ITrustedNeighbor[];
     handleRemoveNeighbor: (neighborUserId: number) => void;
+    hideDeleteButton: boolean;
 }
-export const UserHomeDisplay = ({homeTrustedNeighbors, handleRemoveNeighbor}: IUserHomeDisplayProps) => {
-    
+export const UserHomeDisplay = ({homeTrustedNeighbors, handleRemoveNeighbor, hideDeleteButton}: IUserHomeDisplayProps) => {
     
     return (
         <>
@@ -29,10 +29,12 @@ export const UserHomeDisplay = ({homeTrustedNeighbors, handleRemoveNeighbor}: IU
                             <td>{neighbor.displayName}</td>
                             <td>{neighbor?.roleType ? IHomeRoleType[neighbor.roleType] : ""}</td>
                             <td className={"text-center"}>
-                                <Button className={"btn-sm"} variant={"danger"}
-                                        onClick={() => handleRemoveNeighbor(neighbor.userId)}>
-                                    <FontAwesomeIcon icon={faTrash}/>
-                                </Button>
+                                {!hideDeleteButton &&
+                                    <Button className={"btn-sm"} variant={"danger"}
+                                            onClick={() => handleRemoveNeighbor(neighbor.userId)}>
+                                        <FontAwesomeIcon icon={faTrash}/>
+                                    </Button>
+                                }                                
                             </td>
                         </tr>
                     })}

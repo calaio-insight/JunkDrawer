@@ -8,6 +8,7 @@ interface IFormTextProps {
     isTextArea?: boolean | false;
     rows?: number;
     isRequired?: boolean;
+    isDisabled?: boolean;
 }
 export const FormTextComponent = (
     {
@@ -17,7 +18,8 @@ export const FormTextComponent = (
         placeholder,
         isTextArea, 
         rows,
-        isRequired
+        isRequired,
+        isDisabled
     }:IFormTextProps
 ) => {
     
@@ -38,6 +40,7 @@ export const FormTextComponent = (
                     id={idName}
                     placeholder={placeholder}
                     className={"form-control " + (hasErrors ? "is-invalid" : "")}
+                    disabled={isDisabled}
                 />
                 <ErrorMessage name={idName} component="span" className={"error invalid-feedback"}/>
             </div>

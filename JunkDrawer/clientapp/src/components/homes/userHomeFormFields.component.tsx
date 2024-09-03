@@ -6,6 +6,7 @@ import {useHome} from "../../hooks/useHome.hook.ts";
 import {useAuth} from "../../hooks/useAuth.hook.ts";
 import {INeighborOption, IRoleOption} from "../../interfaces/options.interface.ts";
 import {UserHomeDisplay} from "./userHomeDisplay.component.tsx";
+import {usePermissionsHook} from "../../hooks/usePermissions.hook.ts";
 
 
 interface IUserHomeFormFieldsProps {
@@ -18,7 +19,9 @@ export const UserHomeFormFields = ({homeId, setFieldValue}:IUserHomeFormFieldsPr
     const [selectedNeighbor, setSelectedNeighbor] = useState<INeighborOption|null>(null);
     const [selectedRole, setSelectedRole] = useState<IRoleOption|null>(null);
     const {home, neighborOptions, roleOptions, homeTrustedNeighbors, setHomeTrustedNeighbors} = useHome(currentUser?.userId, homeId);
-           
+    const {isOwner, canViewAccess, canEditAccess} = usePermissionsHook(home);
+    const hideDeleteButton = !isOwner && !canEditAccess;
+    
     const handleRemoveNeighbor = (neighborUserId: number) => {
         let neighbors = homeTrustedNeighbors.filter(n => n.userId != neighborUserId);
         setHomeTrustedNeighbors(neighbors);        
@@ -55,52 +58,61 @@ export const UserHomeFormFields = ({homeId, setFieldValue}:IUserHomeFormFieldsPr
     return (
         <>
             <div className={"form-row mb-3"}>
-                <span>Select other <i>trusted neighbors</i> who can access this home:</span>
+                {(isOwner || canEditAccess) &&
+                    <>
+                        <span>Select other <i>trusted neighbors</i> who can access this home:</span>
 
-                <div className={"row"}>
-                    <FormGroup className={"col-4"}>
-                        <label
-                            htmlFor={"selectedUser"}
-                            className={"form-label col-form-label col-form-label-sm col"}>
-                            User
-                        </label>
-                        <Select
-                            name={"selectedUser"}
-                            value={selectedNeighbor}
-                            options={neighborOptions}
-                            onChange={setSelectedNeighbor}                            
-                        />
-                    </FormGroup>
+                        <div className={"row"}>
+                            <FormGroup className={"col-4"}>
+                                <label
+                                    htmlFor={"selectedUser"}
+                                    className={"form-label col-form-label col-form-label-sm col"}>
+                                    User
+                                </label>
+                                <Select
+                                    name={"selectedUser"}
+                                    value={selectedNeighbor}
+                                    options={neighborOptions}
+                                    onChange={setSelectedNeighbor}
+                                />
+                            </FormGroup>
 
-                    <FormGroup className={"col-4"}>
-                        <label
-                            htmlFor={"selectedRole"}
-                            className={"form-label col-form-label col-form-label-sm col"}>
-                            Role
-                        </label>
-                        <Select
-                            name={"selectedRole"}
-                            value={selectedRole}
-                            options={roleOptions}
-                            onChange={setSelectedRole}
-                        />
-                    </FormGroup>
+                            <FormGroup className={"col-4"}>
+                                <label
+                                    htmlFor={"selectedRole"}
+                                    className={"form-label col-form-label col-form-label-sm col"}>
+                                    Role
+                                </label>
+                                <Select
+                                    name={"selectedRole"}
+                                    value={selectedRole}
+                                    options={roleOptions}
+                                    onChange={setSelectedRole}
+                                />
+                            </FormGroup>
 
-                    <FormGroup className={"col-2 mt-auto"}>
-                        <Button 
-                            variant={"success"} 
-                            onClick={handleAddNeighbor}
-                            disabled={!selectedRole || !selectedNeighbor}
-                            className={!selectedRole || !selectedNeighbor ? "disabled-btn" : ""}
-                        >
-                            + Add
-                        </Button>
-                    </FormGroup>                    
-                </div>
-                
-                {homeTrustedNeighbors && homeTrustedNeighbors.length > 0 &&
-                    <UserHomeDisplay handleRemoveNeighbor={handleRemoveNeighbor} homeTrustedNeighbors={homeTrustedNeighbors} />
+                            <FormGroup className={"col-2 mt-auto"}>
+                                <Button
+                                    variant={"success"}
+                                    onClick={handleAddNeighbor}
+                                    disabled={!selectedRole || !selectedNeighbor}
+                                    className={!selectedRole || !selectedNeighbor ? "disabled-btn" : ""}
+                                >
+                                    + Add
+                                </Button>
+                            </FormGroup>
+                        </div>
+                    </>
                 }
+
+                {(isOwner || canViewAccess || canEditAccess) &&
+                    homeTrustedNeighbors && homeTrustedNeighbors.length > 0 &&
+                        <UserHomeDisplay 
+                            handleRemoveNeighbor={handleRemoveNeighbor}
+                            homeTrustedNeighbors={homeTrustedNeighbors}
+                            hideDeleteButton={hideDeleteButton}
+                        />                    
+                }                
             </div>
         </>
     )

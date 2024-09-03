@@ -8,7 +8,6 @@ import { $enum } from "ts-enum-util";
 import {HomeApi} from "../apis/home.api.ts";
 import {IHome} from "../interfaces/home.interface.ts";
 
-
 export function useHome(currentUserId?: number, homeId?: number) {
     const [home, setHome] = useState<IHome>();
     const [userTrustedNeighbors, setUserTrustedNeighbors] = useState<IUserTrustedNeighbor[]>([]);
@@ -17,11 +16,13 @@ export function useHome(currentUserId?: number, homeId?: number) {
     const [homeTrustedNeighbors, setHomeTrustedNeighbors] = useState<ITrustedNeighbor[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const getHome = () =>{
-        HomeApi.getHomeById(homeId!).then(currentHome => {
-            setHome(currentHome);
-            setIsLoading(false);
-        });
+    const getHome = () =>{        
+        if (homeId && currentUserId) {
+            HomeApi.getHomeById(homeId, currentUserId).then(currentHome => {
+                setHome(currentHome);
+                setIsLoading(false);
+            });
+        }        
     }
     
     const getUserTrustedNeighbors = () =>{
@@ -84,7 +85,7 @@ export function useHome(currentUserId?: number, homeId?: number) {
         if (!home){
             getHome()
         }
-    }, []);
+    }, [homeId, currentUserId]);
     
     return {
         userTrustedNeighbors,
