@@ -10,3 +10,12 @@ export const api = axios.create({
         authorization: `Bearer ${token}`
     }
 })
+
+export const fileApi = axios.create({
+    withCredentials: true,
+    baseURL: "https://localhost:44392/api",
+    headers: {
+        'Content-Type': 'multipart/form-data',
+        authorization: `Bearer ${token}`
+    }
+})

@@ -30,5 +30,5 @@ export const HomeApi = {
         })
 
         return response.data;
-    },
+    },    
 }

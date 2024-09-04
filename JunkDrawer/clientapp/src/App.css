@@ -11,3 +11,12 @@
     border-radius: 1rem;
     margin-right: .5rem;
 }
+
+.Tooltip {
+    width: max-content;
+    background-color: #444;
+    color: white;
+    font-size: 90%;
+    padding: 4px 8px;
+    border-radius: 4px;
+}

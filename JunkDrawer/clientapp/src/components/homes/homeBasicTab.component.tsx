@@ -1,11 +1,16 @@
 ﻿import {IHome} from "../../interfaces/home.interface";
 import {Alert, Button, Card, Form} from "react-bootstrap";
-import viteLogo from "/vite.svg";
 import {homeSchema} from "../../constants/homeSchema.ts";
 import {BasicHomeFormFields} from "./basicHomeFormFields.component.tsx";
 import {UserHomeFormFields} from "./userHomeFormFields.component.tsx";
 import {Formik} from "formik";
 import {usePermissionsHook} from "../../hooks/usePermissions.hook.ts";
+import {useTooltip} from "../../hooks/useTooltip.hook.ts";
+import {FloatingPortal} from "@floating-ui/react";
+import {useState} from "react";
+import {ImageUploadModal} from "../imageUploadModal.component.tsx";
+import {useFiles} from "../../hooks/useFiles.hook.ts";
+import {useAuth} from "../../hooks/useAuth.hook.ts";
 
 
 interface IHomeBasicTabProps {
@@ -13,12 +18,53 @@ interface IHomeBasicTabProps {
     handleSubmit: (formValues: IHome) => void;
 }
 export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
+    const {currentUser} = useAuth();
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [file, setFile] = useState<File>();
+    const {handleHomeImageUpload} = useFiles();
+    const {refs, getReferenceProps, isOpen, floatingStyles, getFloatingProps} = useTooltip();
     const {isOwner, canViewBasic, canEditBasic, canViewAccess, canEditAccess} = usePermissionsHook(home);
-    const isBasicDisabled = !isOwner && !canEditBasic;    
+    const isBasicDisabled = !isOwner && !canEditBasic;  
+    
+    const handleUpload = () => {
+        if (!file || !home || !currentUser){
+            alert("Must select file.");
+            return;
+        }
         
+        handleHomeImageUpload(file, home.homeId, currentUser.userId!).then(() => {
+            setShowImageModal(false);
+            //get home?
+        });        
+    }
+    
+    const handleImageClick = () => {
+        setShowImageModal(true);
+    }
+    
+    const handleCloseImageModal = () => {
+        setShowImageModal(false);
+    }
+            
     return (
-        <>
-            <Card.Img variant="top" src={viteLogo} style={{height: "10rem"}} />
+        <>            
+            <FloatingPortal>
+                {isOpen && (
+                    <div
+                        className="Tooltip"
+                        ref={refs.setFloating}
+                        style={floatingStyles}
+                        {...getFloatingProps()}
+                    >
+                        Click on the image to change
+                    </div>
+                )}
+            </FloatingPortal>
+            
+            <Card.Img variant="top" src="" 
+                      onClick={handleImageClick}
+                      style={{height: "10rem", cursor: 'pointer'}} 
+                      ref={refs.setReference} {...getReferenceProps()} />
             <Card.Title></Card.Title>
             <Formik
                 initialValues={{
@@ -75,6 +121,14 @@ export const HomeBasicTab = ({home, handleSubmit}: IHomeBasicTabProps) => {
                     </Form>
                 )}
             </Formik>
+            
+            <ImageUploadModal 
+                file={file}
+                setFile={setFile}
+                show={showImageModal} 
+                handleClose={handleCloseImageModal}
+                handleUpload={handleUpload}
+            />
         </>
     )
     
