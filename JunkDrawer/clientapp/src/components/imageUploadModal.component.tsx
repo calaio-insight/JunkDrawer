@@ -36,7 +36,7 @@ export const ImageUploadModal = (
                 <div>
                     {file &&
                         <div className={"mt-2"}>
-                            <img src={preview} style={{height: "10rem"}} alt={""}/>
+                            <img src={preview} style={{height: "12rem"}} alt={""}/>
                         </div>
                     }
                 </div>

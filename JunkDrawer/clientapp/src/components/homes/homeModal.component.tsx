@@ -12,7 +12,7 @@ interface IHomeModalProps {
     handleSubmit: (formValues: any) => void;
     homeData?: IHome;
 }
-export const HomeModalComponent = (
+export const HomeModal = (
 {
     show,
     handleClose,
@@ -55,10 +55,10 @@ export const HomeModalComponent = (
                             <Modal.Title>{modalTitle} - {values.homeName}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <BasicHomeFormFields errors={errors} touched={touched}/>
+                            <BasicHomeFormFields errors={errors} touched={touched} />
                             <hr />
                             <Alert variant={"info"}>
-                                After home creation, edit home to grant other users access.
+                                After home creation, edit home to grant other users access and add further details.
                             </Alert>
                         </Modal.Body>
                         <Modal.Footer>

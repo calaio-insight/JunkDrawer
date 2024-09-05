@@ -1,39 +1,40 @@
-﻿import {IHome} from "../../interfaces/home.interface";
-import {Alert, Button, Form} from "react-bootstrap";
-import {homeSchema} from "../../constants/homeSchema.ts";
-import {BasicHomeFormFields} from "./basicHomeFormFields.component.tsx";
-import {UserHomeFormFields} from "./userHomeFormFields.component.tsx";
-import {Formik} from "formik";
-import {usePermissionsHook} from "../../hooks/usePermissions.hook.ts";
+﻿import {IHomeItem} from "../../interfaces/homeItem.interface";
+import {ImageWithTooltip} from "../imageWithTooltip.component.tsx";
 import {useTooltip} from "../../hooks/useTooltip.hook.ts";
 import {ImageUploadModal} from "../imageUploadModal.component.tsx";
-import {ImageWithTooltip} from "../imageWithTooltip.component.tsx";
+import {Alert, Button, Form} from "react-bootstrap";
+import {Formik} from "formik";
+import {homeItemSchema} from "../../constants/homeItemSchema.ts";
+import {HomeItemFormFields} from "./homeItemFormFields.component.tsx";
+import {usePermissionsHook} from "../../hooks/usePermissions.hook.ts";
+import {IHome} from "../../interfaces/home.interface.ts";
 
 
-interface IHomeBasicTabProps {
+interface IHomeItemTabProps {
     home: IHome;
-    handleSubmit: (formValues: IHome) => void;
+    item: IHomeItem;
+    handleSubmit: (formValues: IHomeItem) => void;
     showImageModal: boolean;
     setShowImageModal: any;
     file: File | undefined;
     setFile: any;
-    handleUpload: () => void;
+    handleUpload: (homeItemId: number) => void;
 }
-export const HomeBasicTab = (
+export const HomeItemTab = (
     {
-        home, 
+        home,
+        item,
         handleSubmit,
         showImageModal,
         setShowImageModal,
         file,
         setFile,
         handleUpload
-    }: IHomeBasicTabProps
-) => {  
+    }:IHomeItemTabProps
+) => {
     const {refs, getReferenceProps, isOpen, floatingStyles, getFloatingProps} = useTooltip();
     const {isOwner, canViewBasic, canEditBasic, canViewAccess, canEditAccess} = usePermissionsHook(home);
-    const isBasicDisabled = !isOwner && !canEditBasic;  
-            
+    
     const handleImageClick = () => {
         setShowImageModal(true);
     }
@@ -42,59 +43,53 @@ export const HomeBasicTab = (
         setShowImageModal(false);
         setFile(undefined);
     }
-            
+    
     return (
-        <>       
-            <ImageWithTooltip 
+        <>
+            <ImageWithTooltip
                 isOpen={isOpen}
                 setFloating={refs.setFloating}
                 floatingStyles={floatingStyles}
                 getFloatingProps={getFloatingProps}
-                imgSrc={home?.homePhoto}
-                imgAlt={"Home Icon"}
+                imgSrc={item?.itemPhoto}
+                imgAlt={"Home Item Icon"}
                 handleImageClick={handleImageClick}
                 setReference={refs.setReference}
                 getReferenceProps={getReferenceProps}
-            />    
-                        
+            />
+
             <Formik
                 initialValues={{
-                    homeId: home?.homeId ?? undefined,
-                    homeName: home?.homeName ?? "",
-                    homePhoto: home?.homePhoto ?? "",
-                    address: home?.address ?? "",
-                    address2: home?.address2 ?? "",
-                    city: home?.city ?? "",
-                    state: home?.state ??"",
-                    zip: home?.zip ?? "",
-                    purchaseDate: home?.purchaseDate ?? undefined,
-                    purchasePrice: home?.purchasePrice ?? 0,
-                    notes: home?.notes ?? "",
-                    trustedNeighbors: home?.trustedNeighbors ?? []
+                    homeItemId: item?.homeItemId ?? undefined,
+                    homeId: item?.homeId ?? undefined,
+                    itemName: item?.itemName ?? "",
+                    itemPhoto: item?.itemPhoto ?? "",
+                    purchaseDate: item?.purchaseDate ?? undefined,
+                    purchasePrice: item?.purchasePrice ?? undefined,
+                    maintenanceDate: item?.maintenanceDate ?? undefined,
+                    maintenanceCost: item?.maintenanceCost ?? undefined,
+                    notes: item?.notes ?? "",
                 }}
-                validationSchema={homeSchema}
+                validationSchema={homeItemSchema}
                 onSubmit={(values) => {
                     console.log(values);
                 }}
             >
-                {({ errors, touched, isValid, dirty, values, setFieldValue }) => (
+                {({ errors, touched, isValid, dirty, values }) => (
                     <Form>
                         {(isOwner || canViewBasic || canEditBasic) &&
-                            <BasicHomeFormFields errors={errors} touched={touched} isBasicDisabled={isBasicDisabled}/>
-                        }                        
+                            <HomeItemFormFields errors={errors} touched={touched} />
+                        }
                         <hr />
-                        {home
+                        {item
                             ? <>
                                 {(isOwner || canViewAccess || canEditAccess) &&
-                                    <UserHomeFormFields
-                                        homeId={home.homeId}
-                                        setFieldValue={setFieldValue}
-                                    />
+                                    <div>file uploads here?</div>
                                 }
                             </>
                             :
                             <Alert variant={"info"}>
-                                After home creation, edit home to grant other users access and add further details.
+                                After home item creation, edit item to add an image or file uploads.
                             </Alert>
                         }
 
@@ -112,15 +107,15 @@ export const HomeBasicTab = (
                     </Form>
                 )}
             </Formik>
-            
-            <ImageUploadModal 
+
+
+            <ImageUploadModal
                 file={file}
                 setFile={setFile}
-                show={showImageModal} 
+                show={showImageModal}
                 handleClose={handleCloseImageModal}
-                handleUpload={handleUpload}
+                handleUpload={() => handleUpload(item.homeItemId)}
             />
         </>
     )
-    
 }

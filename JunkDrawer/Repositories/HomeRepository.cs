@@ -75,4 +75,18 @@ public class HomeRepository : IHomeRepository
     }
     
     //TODO: DeleteHome
+
+    public async Task UpdateHomeImage(int homeId, int currentUserId, string imagePath)
+    {
+        await using SqlConnection connection = new (_connString);
+        
+        await connection.OpenAsync();
+        DynamicParameters parameters = new();
+        parameters.Add("@homeId", homeId);
+        parameters.Add("@modifiedBy", currentUserId);
+        parameters.Add("@modifiedDate", DateTime.Now);
+        parameters.Add("@homePhoto", imagePath);
+        
+        await connection.ExecuteScalarAsync<int>(Procedures.UpdateHomeImage, parameters, commandType: CommandType.StoredProcedure);
+    }
 }

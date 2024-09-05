@@ -30,8 +30,6 @@ begin
         , purchaseDate = isnull(@purchaseDate, purchaseDate)
         , purchasePrice = isnull(@purchasePrice, purchasePrice)
         , notes = isnull(@notes, notes)
-        , createdBy = isnull(@createdBy, createdBy)
-        , createdDate = isnull(@createdDate, createdDate)
         , modifiedBy = isnull(@modifiedBy, modifiedBy)
         , modifiedDate = isnull(@modifiedDate, modifiedDate)
     where homeId = @homeId    

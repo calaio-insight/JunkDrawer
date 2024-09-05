@@ -26,16 +26,19 @@ begin
         , maintenanceDate = isnull(@maintenanceDate, maintenanceDate)
         , maintenanceCost = isnull(@maintenanceCost, maintenanceCost)
         , notes = isnull(@notes, notes)
-        , createdBy = isnull(@createdBy, createdBy)
-        , createdDate = isnull(@createdDate, createdDate)
         , modifiedBy = isnull(@modifiedBy, modifiedBy)
         , modifiedDate = isnull(@modifiedDate, modifiedDate)
     where homeItemId = @homeItemId
 
     if @@rowcount = 0
-        insert into dbo.homeItem (homeId, itemName, itemPhoto, purchaseDate, purchasePrice, maintenanceDate, maintenanceCost, notes, createdBy, createdDate, modifiedBy, modifiedDate)
-        values (@homeId, @itemName, @itemPhoto, @purchaseDate, @purchasePrice, @maintenanceDate, @maintenanceCost, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
-
+        begin
+            insert into dbo.homeItem (homeId, itemName, itemPhoto, purchaseDate, purchasePrice, maintenanceDate, maintenanceCost, notes, createdBy, createdDate, modifiedBy, modifiedDate)
+            values (@homeId, @itemName, @itemPhoto, @purchaseDate, @purchasePrice, @maintenanceDate, @maintenanceCost, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
+            select SCOPE_IDENTITY();
+        end
+    else
+        select @homeItemId;    
+        
     commit transaction;
 end
 go

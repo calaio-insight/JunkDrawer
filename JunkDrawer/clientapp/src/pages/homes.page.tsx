@@ -3,10 +3,9 @@ import {HomeApi} from "../apis/home.api.ts";
 import {IHome} from "../interfaces/home.interface.ts";
 import {SpinnerComponent} from "../components/spinner.component.tsx";
 import {Button, Card} from "react-bootstrap";
-import {HomeModalComponent} from "../components/homes/homeModal.component.tsx";
+import {HomeModal} from "../components/homes/homeModal.component.tsx";
 import {useAuth} from "../hooks/useAuth.hook.ts";
 import {Link} from "react-router-dom";
-import viteLogo from "/vite.svg";
 
 export const Homes = () => {
     const {currentUser} = useAuth();        
@@ -63,7 +62,7 @@ export const Homes = () => {
                         {
                             return (
                                 <Card key={home.homeId} style={{ width: '18rem' }}>
-                                    <Card.Img variant="top" src={viteLogo} style={{height: "10rem"}} />
+                                    <Card.Img variant="top" src={home.homePhoto} style={{height: "10rem"}} />
                                     <Card.Body>
                                         <Card.Title>{home.homeName}</Card.Title>
                                         <Card.Text>
@@ -80,10 +79,10 @@ export const Homes = () => {
                 : <div>No homes created yet.</div>
             }
 
-            <HomeModalComponent modalTitle={"Create Home"} 
-                                show={show} 
-                                handleClose={handleClose}
-                                handleSubmit={handleSubmit} />
+            <HomeModal modalTitle={"Create Home"}
+                       show={show}
+                       handleClose={handleClose}
+                       handleSubmit={handleSubmit} />
         </>
     )
 }

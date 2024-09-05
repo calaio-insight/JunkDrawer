@@ -7,4 +7,5 @@ public interface IHomeService
     Task<List<Home>> GetHomesByUserId(int userId);
     Task<Home?> GetHomeById(int id, int currentUserId);
     Task<int?> UpsertHome(Home home, int currentUserId);
+    Task UpdateHomeImage(int homeId, int currentUserId, string imagePath);
 }

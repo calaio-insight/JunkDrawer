@@ -78,4 +78,9 @@ public class HomeService : IHomeService
 
         return homeId;
     }
+
+    public async Task UpdateHomeImage(int homeId, int currentUserId, string imagePath)
+    {
+        await _homeRepository.UpdateHomeImage(homeId, currentUserId, imagePath);
+    }
 }

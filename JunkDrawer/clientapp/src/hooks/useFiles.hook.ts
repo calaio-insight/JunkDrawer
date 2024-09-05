@@ -3,15 +3,14 @@
 
 export function useFiles() {
     
-    const handleHomeImageUpload = async(file: File, homeId: number, currentUserId: number) => {
+    const handleHomeImageUpload = (file: File, homeId: number, currentUserId: number, callback?: any) => {
         
         if (file){
             const formData = new FormData();
             formData.append('file', file);
             
-            FileApi.uploadFile(formData, homeId, currentUserId).then(() => {
-                    
-                //return some kind of success?
+            FileApi.uploadHomeIcon(formData, homeId, currentUserId).then(() => {
+                callback && callback();
             });            
         }
         

@@ -10,6 +10,12 @@ public static class Procedures
     public const string GetHomesByUserId = "[dbo].[GetHomesByUserId]";
     public const string GetHomeById = "[dbo].[GetHomeById]";
     public const string UpsertHome = "[dbo].[UpsertHome]";
+    public const string UpdateHomeImage = "[dbo].[UpdateHomeImage]";
+    
+    public const string GetHomeItemsByHomeId = "[dbo].[GetHomeItemsByHomeId]";
+    public const string GetHomeItemById = "[dbo].[GetHomeItemById]";
+    public const string UpsertHomeItem =  "[dbo].[UpsertHomeItem]";
+    public const string UpdateHomeItemImage = "[dbo].[UpdateHomeItemImage]";
     
     public const string GetTrustedNeighborsByHomeId = "[dbo].[GetTrustedNeighborsByHomeId]";
     public const string InsertTrustedNeighbor = "[dbo].[InsertTrustedNeighbor]";

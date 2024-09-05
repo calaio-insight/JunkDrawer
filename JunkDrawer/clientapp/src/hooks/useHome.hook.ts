@@ -7,22 +7,34 @@ import {IHomeRoleType} from "../interfaces/homeRole.type.ts";
 import { $enum } from "ts-enum-util";
 import {HomeApi} from "../apis/home.api.ts";
 import {IHome} from "../interfaces/home.interface.ts";
+import {IHomeItem} from "../interfaces/homeItem.interface.ts";
+import {HomeItemApi} from "../apis/homeItem.api.ts";
 
 export function useHome(currentUserId?: number, homeId?: number) {
     const [home, setHome] = useState<IHome>();
+    const [homeItems, setHomeItems] = useState<IHomeItem[]>([]);
     const [userTrustedNeighbors, setUserTrustedNeighbors] = useState<IUserTrustedNeighbor[]>([]);
     const [neighborOptions, setNeighborOptions] = useState<INeighborOption[]>([]);
     const [roleOptions, setRoleOptions] = useState<IRoleOption[]>([]);
     const [homeTrustedNeighbors, setHomeTrustedNeighbors] = useState<ITrustedNeighbor[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    const getHome = () =>{        
+    const getHome = () => {        
         if (homeId && currentUserId) {
             HomeApi.getHomeById(homeId, currentUserId).then(currentHome => {
                 setHome(currentHome);
                 setIsLoading(false);
             });
         }        
+    }
+    
+    const getHomeItems = () => {
+        if (homeId && currentUserId) {
+            HomeItemApi.getHomeItemsByHomeId(homeId).then(homeItemList => {
+                setHomeItems(homeItemList);
+                setIsLoading(false);
+            })
+        }
     }
     
     const getUserTrustedNeighbors = () =>{
@@ -82,8 +94,14 @@ export function useHome(currentUserId?: number, homeId?: number) {
     }, [currentUserId])
 
     useEffect(() => {
+        if (home){
+            getHomeItems();
+        }
+    }, [home, currentUserId]);
+
+    useEffect(() => {
         if (!home){
-            getHome()
+            getHome();
         }
     }, [homeId, currentUserId]);
     
@@ -95,7 +113,9 @@ export function useHome(currentUserId?: number, homeId?: number) {
         setHomeTrustedNeighbors,
         home,
         getHome,
+        setHome,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        homeItems
     }
 }
