@@ -27,6 +27,6 @@ public class Home
     public List<TrustedNeighbor> TrustedNeighbors { get; set; }
     
     //View prop
-    public HomeRoleType Role { get; set; }
-    public List<HomePermissionType> Permissions { get; set; }
+    public HomeRoleType? Role { get; set; }
+    public List<HomePermissionType>? Permissions { get; set; }
 }

@@ -8,7 +8,7 @@ export const homeSchema = yup.object().shape({
     city: yup.string().required(),
     state: yup.string().required().length(2, "Length must be two characters, ex:) PA"),
     zip: yup.string().required(),
-    purchaseDate: yup.string(),
-    purchasePrice: yup.number(),
+    purchaseDate: yup.date().nullable(),
+    purchasePrice: yup.number().nullable(),
     notes: yup.string()
 });

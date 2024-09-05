@@ -1,20 +1,20 @@
 ﻿import {FormTextComponent} from "../formInputs/formText.component.tsx";
+import {FormDatePicker} from "../formInputs/formDatePicker.component.tsx";
 
 
 interface IHomeItemsFormFieldsProps {
     errors: any;
     touched: any;
-    isBasicDisabled?: boolean;
+    isItemDisabled?: boolean;
 }
 export const HomeItemFormFields = (
     {
         errors,
         touched,
-        isBasicDisabled
+        isItemDisabled
     }:IHomeItemsFormFieldsProps
 ) => {
-    
-    
+        
     return (
         <>
             <FormTextComponent
@@ -23,17 +23,18 @@ export const HomeItemFormFields = (
                 hasErrors={errors.itemName && touched.itemName}
                 placeholder={"Enter Item Name"}
                 isRequired={true}
-                isDisabled={isBasicDisabled}
+                isDisabled={isItemDisabled}
             />
+
             
             <div className={"row"}>
                 <div className={"col"}>
-                    <FormTextComponent
-                        idName={"purchaseDate"}
+                    <FormDatePicker 
+                        name={"purchaseDate"} 
                         labelText={"Purchase Date"}
-                        hasErrors={errors.purchaseDate && touched.purchaseDate}
-                        placeholder={"Enter Purchase Date"}
-                        isDisabled={isBasicDisabled}
+                        placeholderText={"Enter Purchase Date"}
+                        isDisabled={isItemDisabled}
+                        maxDate={(new Date())}
                     />
                 </div>
                 <div className={"col"}>
@@ -42,18 +43,18 @@ export const HomeItemFormFields = (
                         labelText={"Purchase Price"}
                         hasErrors={errors.purchasePrice && touched.purchasePrice}
                         placeholder={"Enter Purchase Price"}
-                        isDisabled={isBasicDisabled}
+                        isDisabled={isItemDisabled}
                     />
                 </div>
             </div>
             <div className={"row"}>
                 <div className={"col"}>
-                    <FormTextComponent
-                        idName={"maintenanceDate"}
+                    <FormDatePicker
+                        name={"maintenanceDate"}
                         labelText={"Maintenance Date"}
-                        hasErrors={errors.maintenanceDate && touched.maintenanceDate}
-                        placeholder={"Enter Maintenance Date"}
-                        isDisabled={isBasicDisabled}
+                        placeholderText={"Enter Maintenance Date"}
+                        isDisabled={isItemDisabled}
+                        maxDate={(new Date())}
                     />
                 </div>
                 <div className={"col"}>
@@ -62,7 +63,7 @@ export const HomeItemFormFields = (
                         labelText={"Maintenance Cost"}
                         hasErrors={errors.maintenanceCost && touched.maintenanceCost}
                         placeholder={"Enter Maintenance Cost"}
-                        isDisabled={isBasicDisabled}
+                        isDisabled={isItemDisabled}
                     />
                 </div>
             </div>
@@ -74,7 +75,7 @@ export const HomeItemFormFields = (
                 placeholder={"Enter Notes"}
                 isTextArea={true}
                 rows={4}
-                isDisabled={isBasicDisabled}
+                isDisabled={isItemDisabled}
             />
         </>
     )

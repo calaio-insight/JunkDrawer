@@ -57,7 +57,7 @@ public class HomeService : IHomeService
         }
         
         //Get permissions
-        home.Permissions = await _roleService.GetHomePermissionsByRoleId(home.Role);
+        home.Permissions = await _roleService.GetHomePermissionsByRoleId(home.Role ?? HomeRoleType.Viewer);
     }
 
     public async Task<int?> UpsertHome(Home home, int currentUserId)

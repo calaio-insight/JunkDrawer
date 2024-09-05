@@ -33,7 +33,8 @@ export const HomeItemTab = (
     }:IHomeItemTabProps
 ) => {
     const {refs, getReferenceProps, isOpen, floatingStyles, getFloatingProps} = useTooltip();
-    const {isOwner, canViewBasic, canEditBasic, canViewAccess, canEditAccess} = usePermissionsHook(home);
+    const {isOwner, canViewItems, canEditItems, canViewFiles, canEditFiles} = usePermissionsHook(home);
+    const isItemDisabled = !isOwner && !canEditItems;
     
     const handleImageClick = () => {
         setShowImageModal(true);
@@ -77,13 +78,17 @@ export const HomeItemTab = (
             >
                 {({ errors, touched, isValid, dirty, values }) => (
                     <Form>
-                        {(isOwner || canViewBasic || canEditBasic) &&
-                            <HomeItemFormFields errors={errors} touched={touched} />
+                        {(isOwner || canViewItems || canEditItems) &&
+                            <HomeItemFormFields 
+                                errors={errors} 
+                                touched={touched}
+                                isItemDisabled={isItemDisabled}
+                            />
                         }
                         <hr />
                         {item
                             ? <>
-                                {(isOwner || canViewAccess || canEditAccess) &&
+                                {(isOwner || canViewFiles || canEditFiles) &&
                                     <div>file uploads here?</div>
                                 }
                             </>
@@ -93,7 +98,7 @@ export const HomeItemTab = (
                             </Alert>
                         }
 
-                        {(isOwner || canEditBasic || canEditAccess) &&
+                        {(isOwner || canEditItems || canEditFiles) &&
                             <Button
                                 variant="primary"
                                 type={"button"}

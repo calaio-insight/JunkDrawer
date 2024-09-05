@@ -1,4 +1,5 @@
 ﻿import {FormTextComponent} from "../formInputs/formText.component.tsx";
+import {FormDatePicker} from "../formInputs/formDatePicker.component.tsx";
 
 interface IBasicHomeFormFieldsProps {
     errors: any;
@@ -75,13 +76,13 @@ export const BasicHomeFormFields = (
                 </div>
             </div>
             <div className={"row"}>
-                <div className={"col"}>
-                    <FormTextComponent
-                        idName={"purchaseDate"}
+                <div className={"col"}>                    
+                    <FormDatePicker
+                        name={"purchaseDate"}
                         labelText={"Purchase Date"}
-                        hasErrors={errors.purchaseDate && touched.purchaseDate}
-                        placeholder={"Enter Purchase Date"}
+                        placeholderText={"Enter Purchase Date"}
                         isDisabled={isBasicDisabled}
+                        maxDate={(new Date())}
                     />
                 </div>
                 <div className={"col"}>
