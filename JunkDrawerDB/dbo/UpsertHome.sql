@@ -14,36 +14,36 @@
     , @createdDate datetime2 = null
     , @modifiedBy int = null
     , @modifiedDate datetime2 = null
+    , @updatedId int OUTPUT
 as
 begin
     begin transaction;
 
     update dbo.home
     set
-          homeName = isnull(@homeName, homeName)
-        , homePhoto = isnull(@homePhoto, homePhoto)
-        , address = isnull(@address, address)
-        , address2 = isnull(@address2, address2)
-        , city = isnull(@city, city)
-        , state = isnull(@state, state)
-        , zip = isnull(@zip, zip)
-        , purchaseDate = isnull(@purchaseDate, purchaseDate)
-        , purchasePrice = isnull(@purchasePrice, purchasePrice)
-        , notes = isnull(@notes, notes)
-        , modifiedBy = isnull(@modifiedBy, modifiedBy)
-        , modifiedDate = isnull(@modifiedDate, modifiedDate)
-    where homeId = @homeId    
+        homeName = isnull(@homeName, homeName)
+      , homePhoto = isnull(@homePhoto, homePhoto)
+      , address = isnull(@address, address)
+      , address2 = isnull(@address2, address2)
+      , city = isnull(@city, city)
+      , state = isnull(@state, state)
+      , zip = isnull(@zip, zip)
+      , purchaseDate = isnull(@purchaseDate, purchaseDate)
+      , purchasePrice = isnull(@purchasePrice, purchasePrice)
+      , notes = isnull(@notes, notes)
+      , modifiedBy = isnull(@modifiedBy, modifiedBy)
+      , modifiedDate = isnull(@modifiedDate, modifiedDate)
+    where homeId = @homeId
 
     if @@rowcount = 0
         begin
             insert into dbo.home (homeName, homePhoto, address, address2, city, state, zip, purchaseDate, purchasePrice, notes, createdBy, createdDate, modifiedBy, modifiedDate)
             values (@homeName, @homePhoto, @address, @address2, @city, @state, @zip, @purchaseDate, @purchasePrice, @notes, @createdBy, @createdDate, @modifiedBy, @modifiedDate)
-            select SCOPE_IDENTITY();
+            select @updatedId = SCOPE_IDENTITY();
         end
     else
-        select @homeId;
+        select @updatedId = @homeId;
 
-    
     commit transaction;
 end
 go
